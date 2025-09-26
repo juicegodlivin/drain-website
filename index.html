@@ -56,7 +56,7 @@
                 <a href="trending-tokens.html">TRENDING TOKENS</a>
             </div>
             <div class="nav-right">
-                <button class="buy-button">START DCA</button>
+                <button class="buy-button" id="startDCAButton">START DCA</button>
             </div>
         </nav>
 
@@ -144,6 +144,55 @@
                     <p>By connecting, you agree to our Terms of Service</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- DCA Confirmation Modal -->
+    <div class="dca-confirmation-overlay" id="dcaConfirmationModal">
+        <div class="dca-confirmation-modal">
+            <div class="dca-confirmation-header">
+                <h2 class="dca-confirmation-title">START DCA DRAINING</h2>
+                <p class="dca-confirmation-subtitle">Confirm your wallet rent fees will be DCAed into trending tokens</p>
+                <button class="dca-confirmation-close" id="dcaConfirmationClose">&times;</button>
+            </div>
+            
+            <div class="dca-confirmation-body">
+                <div class="dca-summary">
+                    <div class="dca-summary-item">
+                        <span class="dca-summary-label">Wallet Rent Fees</span>
+                        <span class="dca-summary-value">Auto-collected</span>
+                    </div>
+                    <div class="dca-summary-item">
+                        <span class="dca-summary-label">DCA Strategy</span>
+                        <span class="dca-summary-value">Into Trending Tokens</span>
+                    </div>
+                    <div class="dca-summary-item">
+                        <span class="dca-summary-label">Frequency</span>
+                        <span class="dca-summary-value">Continuous</span>
+                    </div>
+                </div>
+                
+                <div class="trending-tokens-preview">
+                    <h3 class="trending-preview-title">Your fees will be DCAed into these trending tokens:</h3>
+                    <div class="trending-tokens-list" id="trendingTokensList">
+                        <!-- Trending tokens will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="dca-confirmation-actions">
+                    <button class="dca-confirm-btn" id="confirmDCA">CONFIRM DCA</button>
+                    <button class="dca-cancel-btn" id="cancelDCA">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Confirmation -->
+    <div class="success-confirmation-overlay" id="successConfirmation">
+        <div class="success-confirmation-modal">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">DCA TRANSACTION CONFIRMED!</h2>
+            <p class="success-message">Your wallet rent fees are now being DCAed into trending tokens</p>
         </div>
     </div>
 
@@ -369,7 +418,8 @@
                     // Close popup after success
                     setTimeout(() => {
                         hideWalletPopup();
-                        alert(`Successfully connected to ${walletType.toUpperCase()}!`);
+                        // Show DCA confirmation modal after wallet connection
+                        showDCAConfirmationModal();
                     }, 1500);
                 } else {
                     throw new Error(result.error || 'Connection failed');
@@ -534,6 +584,128 @@
         setTimeout(() => {
             window.checkWalletStatus();
         }, 2000);
+
+        // DCA Confirmation Modal functionality
+        const dcaConfirmationModal = document.getElementById('dcaConfirmationModal');
+        const dcaConfirmationClose = document.getElementById('dcaConfirmationClose');
+        const startDCAButton = document.getElementById('startDCAButton');
+        const confirmDCAButton = document.getElementById('confirmDCA');
+        const cancelDCAButton = document.getElementById('cancelDCA');
+        const successConfirmation = document.getElementById('successConfirmation');
+        const trendingTokensList = document.getElementById('trendingTokensList');
+
+        // Show DCA confirmation modal when Start DCA button is clicked
+        startDCAButton.addEventListener('click', function() {
+            showWalletPopup();
+        });
+
+        function showDCAConfirmationModal() {
+            // Fetch trending tokens to display in the confirmation
+            fetchTrendingTokensForConfirmation();
+            dcaConfirmationModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideDCAConfirmationModal() {
+            dcaConfirmationModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking close button
+        dcaConfirmationClose.addEventListener('click', hideDCAConfirmationModal);
+
+        // Close modal when clicking outside
+        dcaConfirmationModal.addEventListener('click', function(e) {
+            if (e.target === dcaConfirmationModal) {
+                hideDCAConfirmationModal();
+            }
+        });
+
+        // Cancel button
+        cancelDCAButton.addEventListener('click', hideDCAConfirmationModal);
+
+        // Confirm DCA button
+        confirmDCAButton.addEventListener('click', function() {
+            hideDCAConfirmationModal();
+            
+            // Simulate transaction processing delay
+            setTimeout(() => {
+                showSuccessConfirmation();
+            }, 2000); // 2 second delay to simulate real transaction
+        });
+
+        function showSuccessConfirmation() {
+            successConfirmation.classList.add('show');
+            
+            // Hide success confirmation after 3 seconds
+            setTimeout(() => {
+                successConfirmation.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close success confirmation when clicking outside
+        successConfirmation.addEventListener('click', function(e) {
+            if (e.target === successConfirmation) {
+                successConfirmation.classList.remove('show');
+            }
+        });
+
+        // Fetch trending tokens for confirmation modal
+        async function fetchTrendingTokensForConfirmation() {
+            try {
+                const trendingResponse = await fetch('https://api.coingecko.com/api/v3/search/trending');
+                if (!trendingResponse.ok) throw new Error('Failed to fetch trending data');
+                
+                const trendingData = await trendingResponse.json();
+                const trendingCoins = trendingData.coins.slice(0, 6); // Show top 6 tokens
+
+                // Extract coin IDs
+                const coinIds = trendingCoins.map(coin => coin.item.id).join(',');
+
+                // Fetch detailed market data
+                const marketResponse = await fetch(
+                    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=6&page=1&sparkline=false&price_change_percentage=24h`
+                );
+                
+                if (!marketResponse.ok) throw new Error('Failed to fetch market data');
+                
+                const marketData = await marketResponse.json();
+
+                // Render tokens in confirmation modal
+                trendingTokensList.innerHTML = marketData.map(token => `
+                    <div class="trending-token-item">
+                        <img src="${token.image}" alt="${token.name}" class="trending-token-logo" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMTUiIGZpbGw9IiNGRjE0OTMiLz4KPC9zdmc+Cgo='">
+                        <div class="trending-token-info">
+                            <span class="trending-token-name">${token.name}</span>
+                            <span class="trending-token-symbol">${token.symbol.toUpperCase()}</span>
+                        </div>
+                        <div class="trending-token-price">$${token.current_price < 1 ? token.current_price.toFixed(6) : token.current_price.toFixed(2)}</div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error fetching trending tokens for confirmation:', error);
+                // Show fallback message
+                trendingTokensList.innerHTML = `
+                    <div class="trending-token-fallback">
+                        <p>Loading trending tokens...</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (dcaConfirmationModal.classList.contains('show')) {
+                    hideDCAConfirmationModal();
+                }
+                if (successConfirmation.classList.contains('show')) {
+                    successConfirmation.classList.remove('show');
+                }
+            }
+        });
     </script>
 </body>
 </html>

