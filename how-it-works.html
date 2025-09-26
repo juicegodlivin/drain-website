@@ -401,6 +401,18 @@
     </style>
 </head>
 <body>
+    <!-- CA Widget -->
+    <div class="ca-widget" onclick="copyCA()">
+        <div class="ca-widget-content">
+            <div class="ca-label">Contract Address</div>
+            <div class="ca-address">Soon...</div>
+            <div class="ca-copy-btn">
+                <span class="copy-icon">📋</span>
+                <span class="copy-text">Copy</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Video Background -->
     <video id="background-video" autoplay muted loop playsinline>
         <source src="Notadrainer Background.mp4" type="video/mp4">
@@ -615,6 +627,52 @@
     </div>
 
     <script>
+        // CA Widget functionality
+        function copyCA(event) {
+            // Prevent event bubbling
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            const caAddress = document.querySelector('.ca-address').textContent;
+            const widget = document.querySelector('.ca-widget');
+            const copyBtn = document.querySelector('.ca-copy-btn');
+            
+            // Always copy the current text to clipboard
+            navigator.clipboard.writeText(caAddress).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<span class="copy-icon">✅</span><span class="copy-text">Copied!</span>';
+                widget.style.background = 'rgba(0, 255, 0, 0.95)';
+                widget.style.borderColor = 'rgba(0, 200, 0, 0.4)';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    widget.style.background = 'rgba(255, 255, 255, 0.95)';
+                    widget.style.borderColor = 'rgba(255, 20, 147, 0.15)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = caAddress;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<span class="copy-icon">✅</span><span class="copy-text">Copied!</span>';
+                widget.style.background = 'rgba(0, 255, 0, 0.95)';
+                widget.style.borderColor = 'rgba(0, 200, 0, 0.4)';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    widget.style.background = 'rgba(255, 255, 255, 0.95)';
+                    widget.style.borderColor = 'rgba(255, 20, 147, 0.15)';
+                }, 2000);
+            });
+        }
+
         // Auto-play video background
         const backgroundVideo = document.getElementById('background-video');
         backgroundVideo.play().catch(e => console.log('Video autoplay prevented:', e));
