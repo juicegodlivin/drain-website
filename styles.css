@@ -71,6 +71,9 @@ body {
     object-fit: cover;
     z-index: -1;
     pointer-events: none;
+    /* Ensure video is visible immediately */
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Browser Window - Larger container for better content visibility */

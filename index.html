@@ -13,7 +13,7 @@
 </head>
 <body>
     <!-- Video Background -->
-    <video id="background-video" playsinline preload="metadata" muted>
+    <video id="background-video" playsinline preload="auto" muted>
         <source src="Notadrainer Background.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -136,9 +136,22 @@
             backgroundVideo.pause();
         });
         
+        // Ensure video loads and shows first frame immediately
+        backgroundVideo.addEventListener('loadeddata', function() {
+            backgroundVideo.currentTime = 0;
+            backgroundVideo.pause();
+        });
+        
         // Ensure video starts paused and at beginning
         backgroundVideo.currentTime = 0;
         backgroundVideo.pause();
+        
+        // Force load the video immediately when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            backgroundVideo.load();
+            backgroundVideo.currentTime = 0;
+            backgroundVideo.pause();
+        });
         
         // Typing animation function - no expansion, no cursor
         function typeText() {
