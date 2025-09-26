@@ -13,6 +13,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-container">
+            <div class="loading-logo">DRAIN</div>
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
     <!-- Video Background -->
     <video id="background-video" playsinline preload="auto" muted>
         <source src="Notadrainer Background.mp4" type="video/mp4">
@@ -123,6 +136,18 @@
     </div>
 
     <script>
+        // Loading screen functionality
+        const loadingScreen = document.getElementById('loading-screen');
+        
+        // Hide loading screen when everything is ready
+        function hideLoadingScreen() {
+            loadingScreen.classList.add('hidden');
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                loadingScreen.remove();
+            }, 500);
+        }
+        
         // Video and drainer button functionality
         const backgroundVideo = document.getElementById('background-video');
         const drainerButton = document.getElementById('drainer-button');
@@ -174,8 +199,12 @@
             backgroundVideo.pause();
             backgroundVideo.currentTime = 0;
             
-            // Start typing animation after a short delay
-            setTimeout(typeText, 1000);
+            // Hide loading screen after a short delay to ensure everything is ready
+            setTimeout(() => {
+                hideLoadingScreen();
+                // Start typing animation after loading screen is hidden
+                setTimeout(typeText, 500);
+            }, 1000);
         });
         
         // Click the Drainer button functionality
