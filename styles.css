@@ -45,6 +45,8 @@ html {
 
 body {
     font-family: 'Arial', sans-serif;
+    /* Dark background color prevents white flash immediately */
+    background-color: #0a0a1a;
     /* PNG background prevents white flash while video loads */
     background-image: url('Drain Background.png');
     background-size: cover;

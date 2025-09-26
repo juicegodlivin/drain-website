@@ -9,7 +9,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link rel="preload" href="Drain Background.png" as="image">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Immediate background to prevent white flash */
+        body {
+            background-color: #0a0a1a !important;
+            background-image: url('Drain Background.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Video Background -->
