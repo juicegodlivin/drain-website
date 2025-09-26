@@ -45,7 +45,11 @@ html {
 
 body {
     font-family: 'Arial', sans-serif;
-    /* Video background replaces static background image */
+    /* PNG background prevents white flash while video loads */
+    background-image: url('Drain Background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -74,6 +78,8 @@ body {
     /* Ensure video is visible immediately */
     opacity: 1;
     visibility: visible;
+    /* Video overlays the PNG background when loaded */
+    background: transparent;
 }
 
 /* Browser Window - Larger container for better content visibility */
