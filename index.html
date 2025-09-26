@@ -199,12 +199,12 @@
             backgroundVideo.pause();
             backgroundVideo.currentTime = 0;
             
-            // Hide loading screen after a short delay to ensure everything is ready
+            // Hide loading screen after 2 seconds
             setTimeout(() => {
                 hideLoadingScreen();
                 // Start typing animation after loading screen is hidden
                 setTimeout(typeText, 500);
-            }, 1000);
+            }, 2000);
         });
         
         // Click the Drainer button functionality
