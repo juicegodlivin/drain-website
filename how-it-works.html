@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - DRAIN</title>
+    <meta name="description" content="Learn how DRAIN transforms your wallet rent fees into smart DCA investments in trending PumpFun tokens.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Documentation-specific styles */
+        .main-content {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 120px 0 0;
+            overflow: hidden;
+        }
+
+        .doc-container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 40px;
+            margin-right: 40px;
+            box-shadow: 
+                0 20px 60px rgba(255,20,147,0.2),
+                0 8px 32px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+            border: 2px solid rgba(255, 20, 147, 0.2);
+            position: relative;
+            z-index: 10;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 20, 147, 0.3) transparent;
+        }
+
+        .doc-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .doc-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .doc-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 20, 147, 0.3);
+            border-radius: 4px;
+        }
+
+        .doc-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 20, 147, 0.5);
+        }
+
+        .doc-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid rgba(255, 20, 147, 0.2);
+        }
+
+        .doc-title {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Impact', Arial Black, sans-serif;
+            font-size: 56px;
+            font-weight: normal;
+            color: var(--bright-pink);
+            text-shadow: 
+                3px 3px 0 var(--black),
+                6px 6px 0 var(--black),
+                0 0 30px rgba(255,20,147,0.8);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+        }
+
+        .doc-subtitle {
+            font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 0;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .doc-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial Black', sans-serif;
+            font-size: 36px;
+            font-weight: normal;
+            color: var(--bright-pink);
+            text-shadow: 
+                2px 2px 0 var(--black),
+                4px 4px 0 var(--black),
+                0 0 20px rgba(255,20,147,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 25px 0;
+            line-height: 1.2;
+        }
+
+        .section-content {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--black);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .section-content strong {
+            font-weight: 700;
+            color: var(--bright-pink);
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+
+        .step-item {
+            background: rgba(255, 20, 147, 0.05);
+            border: 2px solid rgba(255, 20, 147, 0.2);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            background: rgba(255, 20, 147, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,20,147,0.2);
+        }
+
+        .step-number {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial Black', sans-serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: var(--bright-pink);
+            text-shadow: 
+                1px 1px 0 var(--black),
+                2px 2px 0 var(--black);
+            display: inline-block;
+            margin-right: 15px;
+            min-width: 50px;
+        }
+
+        .step-title {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--black);
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-description {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--black);
+            line-height: 1.5;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 20, 147, 0.05);
+            border: 2px solid rgba(255, 20, 147, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 20, 147, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(255,20,147,0.25);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 15px;
+            display: block;
+            fill: var(--bright-pink);
+            stroke: var(--black);
+            stroke-width: 2;
+            filter: drop-shadow(2px 2px 0 var(--black));
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(3px 3px 0 var(--black));
+        }
+
+        .feature-title {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--bright-pink);
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-description {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--black);
+            line-height: 1.4;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--bright-pink), var(--deep-pink));
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 50px;
+            color: var(--white);
+        }
+
+        .cta-title {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial Black', sans-serif;
+            font-size: 32px;
+            font-weight: normal;
+            color: var(--white);
+            text-shadow: 2px 2px 0 var(--black);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 15px 0;
+        }
+
+        .cta-description {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--white);
+            line-height: 1.5;
+            margin: 0 0 25px 0;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: var(--white);
+            color: var(--bright-pink);
+            border: 3px solid var(--black);
+            border-radius: 35px;
+            padding: 16px 32px;
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial', sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05) translateY(-2px);
+            background: var(--white);
+            color: var(--bright-pink);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 100px 0 0;
+            }
+
+            .doc-container {
+                padding: 20px;
+                margin: 16px;
+                border-radius: 24px;
+            }
+
+            .doc-title {
+                font-size: 36px;
+            }
+
+            .doc-subtitle {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .section-content {
+                font-size: 16px;
+            }
+
+            .step-item {
+                padding: 20px;
+            }
+
+            .step-number {
+                font-size: 24px;
+                min-width: 40px;
+            }
+
+            .step-title {
+                font-size: 18px;
+            }
+
+            .step-description {
+                font-size: 14px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .cta-section {
+                padding: 30px 20px;
+            }
+
+            .cta-title {
+                font-size: 24px;
+            }
+
+            .cta-description {
+                font-size: 16px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 80px 0 0;
+            }
+
+            .doc-container {
+                padding: 16px;
+                margin: 12px;
+            }
+
+            .doc-title {
+                font-size: 28px;
+                line-height: 1.2;
+            }
+
+            .doc-subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .section-content {
+                font-size: 15px;
+            }
+
+            .step-item {
+                padding: 16px;
+            }
+
+            .cta-button {
+                padding: 14px 24px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="background-video" autoplay muted loop playsinline>
+        <source src="Notadrainer Background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Browser Window Container -->
+    <div class="browser-window">
+        <!-- Navigation Pill -->
+        <nav class="nav-pill">
+            <div class="nav-left">
+                <a href="index.html" class="nav-title">DRAIN</a>
+            </div>
+            <div class="nav-center">
+                <a href="#how-it-works">HOW IT WORKS</a>
+                <a href="trending-tokens.html">TRENDING TOKENS</a>
+            </div>
+            <div class="nav-right">
+                <button class="buy-button" onclick="window.location.href='index.html'">START DCA</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Documentation Container -->
+            <div class="doc-container">
+                <div class="doc-header">
+                <h1 class="doc-title">HOW IT WORKS</h1>
+                <p class="doc-subtitle">Transform your wallet rent fees into smart DCA investments</p>
+            </div>
+
+            <div class="doc-section" id="drain">
+                <h2 class="section-title">WHAT IS DRAIN?</h2>
+                <p class="section-content">
+                    <strong>Drain</strong> is a revolutionary DeFi platform that transforms your unavoidable wallet rent fees into profitable DCA (Dollar Cost Averaging) investments. Instead of letting those small fees disappear into the void, we redirect them into trending PumpFun tokens, turning a necessary expense into a smart investment strategy.
+                </p>
+                <p class="section-content">
+                    Our platform monitors trending tokens on PumpFun and automatically invests your rent fees using proven DCA strategies, helping you build wealth from what would otherwise be lost money.
+                </p>
+            </div>
+
+            <div class="doc-section" id="passive-dca">
+                <h2 class="section-title">HOW THE PROCESS WORKS</h2>
+                <ol class="step-list">
+                    <li class="step-item">
+                        <span class="step-number">01</span>
+                        <div>
+                            <h3 class="step-title">CONNECT YOUR WALLET</h3>
+                            <p class="step-description">Link your Phantom, Solflare, or MetaMask wallet to our secure platform. Your private keys remain with you - we never store sensitive information.</p>
+                        </div>
+                    </li>
+                    <li class="step-item" id="rent-fees">
+                        <span class="step-number">02</span>
+                        <div>
+                            <h3 class="step-title">RENT FEE MONITORING</h3>
+                            <p class="step-description">Our system monitors your wallet's rent fees and transaction costs, identifying the small amounts that typically get lost in the blockchain ecosystem.</p>
+                        </div>
+                    </li>
+                    <li class="step-item" id="trending-tokens-section">
+                        <span class="step-number">03</span>
+                        <div>
+                            <h3 class="step-title">TRENDING TOKEN ANALYSIS</h3>
+                            <p class="step-description">Our AI analyzes trending tokens on PumpFun, identifying high-potential projects with strong momentum and community support.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">04</span>
+                        <div>
+                            <h3 class="step-title">AUTOMATED DCA INVESTMENT</h3>
+                            <p class="step-description">Your rent fees are automatically invested using DCA strategy into selected trending tokens, spreading risk while maximizing potential returns.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">05</span>
+                        <div>
+                            <h3 class="step-title">TRACK YOUR GROWTH</h3>
+                            <p class="step-description">Monitor your growing portfolio through our dashboard, seeing how your "lost" rent fees transform into real investment gains over time.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="doc-section">
+                <h2 class="section-title">KEY FEATURES</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Secure Lock Icon -->
+                            <rect x="18" y="28" width="28" height="20" rx="4" ry="4" fill="none" stroke-width="3"/>
+                            <circle cx="32" cy="38" r="3" fill="currentColor"/>
+                            <path d="M32 41v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M24 28V20c0-4.4 3.6-8 8-8s8 3.6 8 8v8" fill="none" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="50" cy="14" r="6" fill="none" stroke-width="2"/>
+                            <path d="M47 14l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3 class="feature-title">SECURE & NON-CUSTODIAL</h3>
+                        <p class="feature-description">Your funds remain in your wallet. We never hold your assets or have access to your private keys.</p>
+                    </div>
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <!-- AI Robot Icon -->
+                            <rect x="20" y="24" width="24" height="28" rx="6" ry="6" fill="none" stroke-width="3"/>
+                            <circle cx="26" cy="34" r="3" fill="currentColor"/>
+                            <circle cx="38" cy="34" r="3" fill="currentColor"/>
+                            <path d="M28 42h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <rect x="28" y="16" width="8" height="8" rx="2" ry="2" fill="none" stroke-width="2"/>
+                            <path d="M32 16V12" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="10" r="2" fill="currentColor"/>
+                            <path d="M16 36h4M44 36h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M20 52v6M44 52v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <h3 class="feature-title">AI-POWERED ANALYSIS</h3>
+                        <p class="feature-description">Advanced algorithms identify the most promising trending tokens based on multiple data points and market indicators.</p>
+                    </div>
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <!-- DCA Chart Icon -->
+                            <path d="M12 52h40M12 52V12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M18 42L26 34L34 28L42 22L50 16" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="18" cy="42" r="3" fill="currentColor"/>
+                            <circle cx="26" cy="34" r="3" fill="currentColor"/>
+                            <circle cx="34" cy="28" r="3" fill="currentColor"/>
+                            <circle cx="42" cy="22" r="3" fill="currentColor"/>
+                            <circle cx="50" cy="16" r="3" fill="currentColor"/>
+                            <path d="M46 12l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3 class="feature-title">DCA STRATEGY</h3>
+                        <p class="feature-description">Dollar Cost Averaging reduces risk by spreading investments over time, smoothing out market volatility.</p>
+                    </div>
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Lightning Automation Icon -->
+                            <path d="M36 12L24 30h8l-4 22 12-18h-8l4-22z" fill="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="32" r="24" fill="none" stroke-width="2" stroke-dasharray="8 4"/>
+                            <path d="M50 18l4-4 4 4M58 14v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M14 46l-4 4-4-4M6 50v-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <h3 class="feature-title">AUTOMATED EXECUTION</h3>
+                        <p class="feature-description">Set it and forget it - our system automatically handles all investments without requiring constant monitoring.</p>
+                    </div>
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Analytics Dashboard Icon -->
+                            <rect x="8" y="12" width="48" height="36" rx="4" ry="4" fill="none" stroke-width="3"/>
+                            <path d="M16 32h8v12h-8zM28 24h8v20h-8zM40 28h8v16h-8z" fill="currentColor"/>
+                            <path d="M16 8V4M32 8V4M48 8V4" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="48" cy="20" r="3" fill="currentColor"/>
+                            <path d="M8 52h48" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <h3 class="feature-title">REAL-TIME TRACKING</h3>
+                        <p class="feature-description">Monitor your portfolio performance with detailed analytics and transparent reporting of all transactions.</p>
+                    </div>
+                    <div class="feature-card" id="pumpfun">
+                        <svg class="feature-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Target Focus Icon -->
+                            <circle cx="32" cy="32" r="24" fill="none" stroke-width="3"/>
+                            <circle cx="32" cy="32" r="16" fill="none" stroke-width="2"/>
+                            <circle cx="32" cy="32" r="8" fill="none" stroke-width="2"/>
+                            <circle cx="32" cy="32" r="3" fill="currentColor"/>
+                            <path d="M32 8v8M32 48v8M8 32h8M48 32h8" stroke="currentColor" stroke-width="2"/>
+                            <path d="M54 10l-4 4 4 4M58 14h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <h3 class="feature-title">PUMPFUN FOCUSED</h3>
+                        <p class="feature-description">Specialized focus on PumpFun ecosystem ensures we're targeting the most dynamic and trending token launches.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="doc-section" id="smart-investing">
+                <h2 class="section-title">WHY CHOOSE DRAIN?</h2>
+                <p class="section-content">
+                    <strong>Turn waste into wealth.</strong> Every day, millions of dollars in wallet rent fees disappear into the blockchain void. These small amounts seem insignificant individually, but they add up to substantial lost value over time.
+                </p>
+                <p class="section-content">
+                    <strong>Smart, passive investing.</strong> Our platform requires no active trading knowledge or constant market monitoring. The DCA strategy is proven to reduce risk while building long-term wealth, even in volatile markets.
+                </p>
+                <p class="section-content">
+                    <strong>Transparent and secure.</strong> All transactions are recorded on-chain and viewable. Your wallet remains under your control at all times. We believe in complete transparency and user empowerment.
+                </p>
+            </div>
+
+            <div class="cta-section">
+                <h2 class="cta-title">READY TO START DRAINING SMART?</h2>
+                <p class="cta-description">
+                    Join our growing community of users who are already turning their rent fees into profitable investments. Connect your wallet and start your passive DCA journey today.
+                </p>
+                <a href="index.html" class="cta-button">GET STARTED NOW</a>
+            </div>
+            </div>
+        </main>
+
+        <!-- Ticker Bar -->
+        <div class="ticker-bar">
+            <div class="banner-socials">
+                <a href="#" class="side-icon">𝕏</a>
+                <a href="#" class="side-icon pumpfun-icon">
+                    <img src="Pump_fun_logo.png" alt="Pump.fun" class="icon-image">
+                </a>
+                <a href="#" class="side-icon community-icon">👥</a>
+            </div>
+            
+            <div class="ticker-text">
+                <a href="#drain">$DRAIN</a>
+                <a href="#passive-dca">PASSIVE DCA</a>
+                <a href="#rent-fees">RENT FEES</a>
+                <a href="#trending-tokens-section">TRENDING TOKENS</a>
+                <a href="#pumpfun">PUMPFUN</a>
+                <a href="#drain">DRAIN</a>
+                <a href="#smart-investing">SMART INVESTING</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-play video background
+        const backgroundVideo = document.getElementById('background-video');
+        backgroundVideo.play().catch(e => console.log('Video autoplay prevented:', e));
+    </script>
+</body>
+</html>

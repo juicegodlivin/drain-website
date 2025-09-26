@@ -1,0 +1,27 @@
+{
+  "name": "notadrainer-v1",
+  "version": "1.0.0",
+  "description": "Not A Drainer - Passive DCA Into Trending Tokens",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=8000 --open",
+    "start": "live-server --port=8000 --open",
+    "build": "echo 'Static site - no build needed'",
+    "serve": "live-server --port=8000 --open --entry-file=index.html"
+  },
+  "keywords": [
+    "defi",
+    "dca",
+    "crypto",
+    "solana",
+    "pumpfun",
+    "trending-tokens"
+  ],
+  "author": "Not A Drainer Team",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
+
+

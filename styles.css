@@ -1,0 +1,1286 @@
+/* Custom Font Face - Kawaii RT Mona Shine (thick bubble letters) */
+@font-face {
+    font-family: 'Kawaii RT Mona Shine';
+    src: url('fonts/kawaii-rt-mona-shine.otf') format('opentype'),
+         url('fonts/KawaiiRT-MonaShine.woff2') format('woff2'),
+         url('fonts/KawaiiRT-MonaShine.woff') format('woff'),
+         url('fonts/KawaiiRT-MonaShine.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* CSS Custom Properties */
+:root {
+    --primary-blue: #3B9EFF;
+    --sky-blue: #87CEEB;
+    --light-blue: #ADD8E6;
+    --accent-red: #DC143C;
+    --dark-red: #B91C3C;
+    --bright-pink: #FF1493;
+    --hot-pink: #FF69B4;
+    --deep-pink: #C1226C;
+    --neon-pink: #FF0080;
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray: #808080;
+    --dark-gray: #404040;
+    --horn-orange: #FFB366;
+    --silver-gray: #C0C0C0;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Root viewport optimizations for mobile */
+html {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    /* Video background replaces static background image */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow-x: hidden;
+    margin: 0;
+    /* Prevent zoom on input focus for iOS */
+    -webkit-text-size-adjust: 100%;
+    /* Prevent text inflation on Android */
+    text-size-adjust: 100%;
+}
+
+/* Video Background Styles */
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Browser Window - Larger container for better content visibility */
+.browser-window {
+    width: 96vw;
+    max-width: 1600px;
+    height: 92vh;
+    /* Subtle glass effect that doesn't compete with the background */
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(1px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Header - balanced design with title integration */
+.nav-pill {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 60px;
+    padding: 20px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 
+        0 8px 32px rgba(0,0,0,0.12),
+        0 2px 8px rgba(0,0,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+    z-index: 100;
+    border: 1px solid rgba(255,255,255,0.3);
+    min-height: 70px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+/* Navigation Title - kawaii bubble font in header */
+.nav-title {
+    font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Impact', Arial Black, sans-serif;
+    font-size: 38px;
+    font-weight: normal;
+    color: var(--bright-pink);
+    text-shadow: 
+        3px 3px 0 var(--black),
+        6px 6px 0 var(--black),
+        0 0 30px rgba(255,20,147,0.8),
+        0 0 60px rgba(255,20,147,0.4);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0;
+    white-space: nowrap;
+    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-title:hover {
+    color: var(--neon-pink);
+    transform: scale(1.05);
+    text-shadow: 
+        3px 3px 0 var(--black),
+        6px 6px 0 var(--black),
+        0 0 40px rgba(255,20,147,1),
+        0 0 80px rgba(255,20,147,0.6);
+}
+
+.nav-mascot {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(220,20,60,0.3));
+}
+
+.nav-center {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    max-width: 300px;
+}
+
+.nav-center a {
+    color: var(--black);
+    text-decoration: none;
+    font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 10px 16px;
+    border-radius: 30px;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    text-align: center;
+    min-width: fit-content;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        0 3px 10px rgba(0,0,0,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.nav-center a:hover {
+    color: var(--bright-pink);
+    background: rgba(255, 20, 147, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 20px rgba(255,20,147,0.2),
+        0 2px 8px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+}
+
+.social-icons {
+    display: flex;
+    gap: 8px;
+}
+
+.social-icon {
+    color: var(--black);
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icon:hover {
+    background: var(--bright-pink);
+    color: var(--white);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255,20,147,0.4);
+}
+
+.buy-button {
+    background: linear-gradient(135deg, var(--bright-pink), var(--deep-pink));
+    color: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 35px;
+    padding: 14px 28px;
+    font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    text-shadow: 1px 1px 2px var(--black);
+    white-space: nowrap;
+    box-shadow: 
+        0 4px 15px rgba(255,20,147,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.buy-button:hover {
+    transform: scale(1.05) translateY(-1px);
+    background: linear-gradient(135deg, var(--neon-pink), var(--bright-pink));
+    box-shadow: 
+        0 6px 25px rgba(255,20,147,0.5),
+        0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Main Content - fill the transparent window */
+.main-content {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px 60px;
+}
+
+/* Title now integrated in navigation header - old styles removed */
+
+/* Central Content Area - Click the Drainer button positioning */
+.center-content {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Click the Drainer Button - positioned over the drain */
+.drainer-button {
+    font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial', sans-serif;
+    font-size: 24px;
+    font-weight: normal;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--bright-pink), var(--deep-pink));
+    border: 3px solid var(--black);
+    border-radius: 50px;
+    padding: 20px 40px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 2px 2px 0 var(--black);
+    box-shadow: 
+        0 8px 25px rgba(255,20,147,0.4),
+        0 4px 15px rgba(0,0,0,0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3);
+    animation: drainerPulse 2s ease-in-out infinite;
+}
+
+.drainer-button:hover {
+    transform: scale(1.08) translateY(-3px);
+    background: linear-gradient(135deg, var(--neon-pink), var(--bright-pink));
+    box-shadow: 
+        0 12px 35px rgba(255,20,147,0.6),
+        0 6px 20px rgba(0,0,0,0.4),
+        inset 0 2px 0 rgba(255,255,255,0.4);
+}
+
+.drainer-button:active {
+    transform: scale(1.02) translateY(-1px);
+    box-shadow: 
+        0 6px 20px rgba(255,20,147,0.5),
+        0 3px 10px rgba(0,0,0,0.3);
+}
+
+/* Speech Bubble - fixed large design positioned near drain */
+.speech-bubble {
+    position: absolute;
+    bottom: 35%;
+    right: 15%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 3px solid var(--bright-pink);
+    border-radius: 24px;
+    padding: 40px 48px;
+    width: 480px;
+    height: 160px;
+    box-shadow: 
+        0 16px 50px rgba(255,20,147,0.25),
+        0 6px 25px rgba(0,0,0,0.15),
+        inset 0 2px 0 rgba(255,255,255,0.9);
+    animation: bubbleFloat 5s ease-in-out infinite 2s;
+    z-index: 25;
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 80px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 3px solid var(--bright-pink);
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+    backdrop-filter: blur(20px);
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 82px;
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    transform: rotate(45deg);
+    backdrop-filter: blur(20px);
+}
+
+.speech-bubble p {
+    font-family: 'Nunito', 'Fredoka', 'Arial Black', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--black);
+    text-transform: uppercase;
+    line-height: 1.4;
+    letter-spacing: 0.8px;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+/* Typing animation - no cursor, fixed container */
+.typing-text {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Banner Social Icons - inside ticker bar */
+.banner-socials {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.side-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 16px rgba(0,0,0,0.12),
+        0 1px 6px rgba(0,0,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.side-icon:hover {
+    background: var(--bright-pink);
+    color: var(--white);
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(255,20,147,0.4),
+        0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Pump.fun logo icon styling */
+.pumpfun-icon {
+    padding: 8px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.icon-image {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.pumpfun-icon:hover {
+    background: var(--bright-pink) !important;
+    transform: scale(1.1) translateY(-2px);
+}
+
+.pumpfun-icon:hover .icon-image {
+    filter: brightness(1.2) contrast(1.1);
+}
+
+/* Community icon specific adjustment */
+.community-icon {
+    position: relative;
+    top: -1px; /* Slight upward adjustment */
+}
+
+/* Ticker Bar - larger static display with pink accents */
+.ticker-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 2px solid var(--bright-pink);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 30;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    box-shadow: 
+        0 -4px 20px rgba(255,20,147,0.15),
+        0 -2px 10px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+    overflow: visible;
+}
+
+.ticker-text {
+    font-family: 'Nunito', 'Fredoka', 'Arial Black', sans-serif;
+    font-size: 17px;
+    color: var(--black);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    text-align: center;
+    flex: 1;
+    margin-left: 24px;
+    overflow: visible;
+    min-width: 0;
+}
+
+.ticker-text span,
+.ticker-text a {
+    padding: 8px 16px;
+    border-radius: 24px;
+    background: rgba(255, 20, 147, 0.1);
+    border: 1px solid rgba(255, 20, 147, 0.2);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin: 0 2px;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.ticker-text a:hover {
+    background: rgba(255, 20, 147, 0.2);
+    border-color: rgba(255, 20, 147, 0.4);
+    transform: translateY(-1px);
+}
+
+.ticker-text span:nth-child(odd),
+.ticker-text a:nth-child(odd) {
+    color: var(--bright-pink);
+    font-weight: 900;
+}
+
+.ticker-text span:hover {
+    background: rgba(255, 20, 147, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes titleFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Removed mascot bounce animation - no longer needed */
+
+@keyframes bubbleFloat {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+    }
+    50% {
+        transform: translateY(-8px) scale(1.02);
+    }
+}
+
+@keyframes drainerPulse {
+    0%, 100% {
+        box-shadow: 
+            0 8px 25px rgba(255,20,147,0.4),
+            0 4px 15px rgba(0,0,0,0.3),
+            inset 0 2px 0 rgba(255,255,255,0.3);
+    }
+    50% {
+        box-shadow: 
+            0 12px 35px rgba(255,20,147,0.6),
+            0 6px 20px rgba(0,0,0,0.4),
+            inset 0 2px 0 rgba(255,255,255,0.4);
+    }
+}
+
+/* Removed old typing keyframes - using JS animation instead */
+
+/* Removed ticker scroll animation - now using static display */
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .browser-window {
+        width: 98vw;
+        height: 94vh;
+    }
+    
+    .main-title {
+        font-size: 95px;
+    }
+    
+    .title-section {
+        top: 180px;
+        right: 40px;
+    }
+    
+    .speech-bubble {
+        right: 10%;
+        width: 400px;
+        height: 140px;
+        padding: 32px 36px;
+    }
+    
+    .speech-bubble p {
+        font-size: 16px;
+    }
+    
+    .nav-center {
+        gap: 24px;
+    }
+    
+    .nav-center a {
+        font-size: 12px;
+        padding: 6px 14px;
+    }
+    
+    .buy-button {
+        font-size: 14px;
+        padding: 14px 28px;
+    }
+    
+    .drainer-button {
+        font-size: 20px;
+        padding: 16px 32px;
+    }
+    
+    .ticker-bar {
+        padding: 0 20px;
+        height: 75px;
+    }
+    
+    .ticker-text {
+        font-size: 14px;
+        gap: 12px;
+        margin-left: 20px;
+    }
+    
+    .ticker-text span {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+    
+    .side-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+    
+    .icon-image {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Medium viewport breakpoint - keep all content but make smaller */
+@media (max-width: 950px) {
+    .ticker-bar {
+        padding: 0 16px;
+        height: 70px;
+    }
+    
+    .ticker-text {
+        font-size: 12px;
+        gap: 10px;
+        margin-left: 16px;
+    }
+    
+    .ticker-text span {
+        padding: 5px 10px;
+        font-size: 11px;
+        border-radius: 16px;
+    }
+    
+    .side-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+    }
+    
+    .icon-image {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 850px) {
+    .ticker-bar {
+        padding: 0 12px;
+        height: auto;
+        min-height: 80px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .banner-socials {
+        order: 1;
+        gap: 8px;
+    }
+    
+    .ticker-text {
+        font-size: 10px;
+        gap: 6px;
+        margin-left: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        order: 2;
+    }
+    
+    .ticker-text span {
+        padding: 4px 8px;
+        font-size: 9px;
+        border-radius: 12px;
+    }
+    
+    .side-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .icon-image {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px 8px;
+    }
+    
+    .browser-window {
+        width: 99vw;
+        height: 96vh;
+    }
+    
+    .nav-pill {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        right: auto;
+        width: 70% !important;
+        max-width: 600px !important;
+        transform: translateX(-50%);
+        padding: 16px 20px;
+        min-height: auto;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .nav-title {
+        font-size: 24px;
+        text-align: center;
+        line-height: 1.2;
+    }
+    
+    .nav-center {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        order: 1;
+    }
+    
+    .nav-center a {
+        font-size: 10px;
+        padding: 6px 12px;
+        white-space: nowrap;
+    }
+    
+    .nav-right {
+        order: 2;
+    }
+    
+    .main-title {
+        font-size: 75px;
+    }
+    
+    .title-section {
+        top: 220px;
+        right: 20px;
+    }
+    
+    .speech-bubble {
+        bottom: 35%;
+        right: 8px;
+        left: 8px;
+        width: auto;
+        height: auto;
+        min-height: 100px;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .speech-bubble p {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+    
+    .speech-bubble::before {
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+    }
+    
+    .speech-bubble::after {
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+    }
+    
+    .side-socials {
+        left: 16px;
+        bottom: 20px;
+        gap: 12px;
+    }
+    
+    .side-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+    
+    .ticker-bar {
+        height: auto;
+        min-height: 70px;
+        padding: 10px 16px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .banner-socials {
+        order: 1;
+        flex-direction: row;
+        gap: 8px;
+    }
+    
+    .ticker-text {
+        font-size: 11px;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+        order: 2;
+        margin-left: 0;
+    }
+    
+    .ticker-text span,
+    .ticker-text a {
+        padding: 5px 8px;
+        font-size: 10px;
+        border-radius: 14px;
+    }
+    
+    .buy-button {
+        font-size: 13px;
+        padding: 12px 20px;
+    }
+    
+    .drainer-button {
+        font-size: 18px;
+        padding: 14px 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-pill {
+        width: 75% !important;
+        max-width: 500px !important;
+        padding: 12px 16px;
+        gap: 10px;
+    }
+    
+    .nav-title {
+        font-size: 20px;
+    }
+    
+    .nav-center a {
+        font-size: 9px;
+        padding: 5px 8px;
+    }
+    
+    .main-title {
+        font-size: 50px;
+        top: 120px;
+        left: 20px;
+    }
+    
+    .central-mascot {
+        height: 180px;
+    }
+    
+    .speech-bubble {
+        bottom: 32%;
+        padding: 16px;
+        min-height: 80px;
+    }
+    
+    .speech-bubble p {
+        font-size: 11px;
+        line-height: 1.2;
+    }
+    
+    .ticker-bar {
+        padding: 8px 12px;
+        min-height: 60px;
+        gap: 6px;
+    }
+    
+    .ticker-text {
+        font-size: 9px;
+        gap: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .ticker-text span,
+    .ticker-text a {
+        padding: 3px 6px;
+        font-size: 8px;
+        border-radius: 10px;
+    }
+    
+    .banner-socials {
+        gap: 6px;
+    }
+    
+    .side-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .icon-image {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .nav-mascot {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .buy-button {
+        padding: 8px 16px;
+        font-size: 10px;
+    }
+    
+    .drainer-button {
+        font-size: 16px;
+        padding: 12px 24px;
+        min-height: 44px; /* Better touch target */
+        min-width: 120px;
+    }
+    
+    /* Improve touch targets for all interactive elements */
+    .side-icon,
+    .buy-button,
+    .nav-center a,
+    .wallet-option,
+    .wallet-connect-btn {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Add safe area padding for modern mobile devices */
+    .ticker-bar {
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    
+    .nav-pill {
+        padding-top: max(12px, env(safe-area-inset-top));
+    }
+}
+
+/* Wallet Connection Popup */
+.wallet-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wallet-popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.wallet-popup {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 32px;
+    border: 2px solid var(--bright-pink);
+    box-shadow: 
+        0 20px 60px rgba(255,20,147,0.3),
+        0 8px 32px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow: hidden;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+    .wallet-popup {
+        width: 95%;
+        max-width: none;
+        margin: 20px;
+        border-radius: 24px;
+    }
+    
+    .wallet-popup-header {
+        padding: 24px 20px 20px;
+    }
+    
+    .wallet-popup-title {
+        font-size: 24px;
+    }
+    
+    .wallet-popup-subtitle {
+        font-size: 14px;
+    }
+    
+    .wallet-popup-body {
+        padding: 20px;
+    }
+    
+    .wallet-option {
+        padding: 16px 18px;
+        gap: 12px;
+    }
+    
+    .wallet-logo {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .wallet-name {
+        font-size: 16px;
+    }
+    
+    .wallet-desc {
+        font-size: 11px;
+    }
+    
+    .wallet-connect-btn {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wallet-popup {
+        width: 95%;
+        margin: 16px;
+        border-radius: 20px;
+    }
+    
+    .wallet-popup-header {
+        padding: 20px 16px 16px;
+    }
+    
+    .wallet-popup-title {
+        font-size: 20px;
+    }
+    
+    .wallet-popup-subtitle {
+        font-size: 13px;
+    }
+    
+    .wallet-popup-body {
+        padding: 16px;
+    }
+    
+    .wallet-options {
+        gap: 12px;
+    }
+    
+    .wallet-option {
+        padding: 14px 16px;
+        gap: 10px;
+        border-radius: 16px;
+    }
+    
+    .wallet-logo {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .wallet-name {
+        font-size: 14px;
+    }
+    
+    .wallet-desc {
+        font-size: 10px;
+    }
+    
+    .wallet-connect-btn {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+    
+    .wallet-popup-close {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+        top: 16px;
+        right: 16px;
+    }
+}
+
+.wallet-popup-overlay.show .wallet-popup {
+    transform: scale(1) translateY(0);
+}
+
+.wallet-popup-header {
+    padding: 32px 32px 24px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid rgba(255,20,147,0.1);
+}
+
+.wallet-popup-title {
+    font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Impact', Arial Black, sans-serif;
+    font-size: 28px;
+    font-weight: normal;
+    color: var(--bright-pink);
+    text-shadow: 
+        2px 2px 0 var(--black),
+        4px 4px 0 var(--black),
+        0 0 20px rgba(255,20,147,0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 8px 0;
+}
+
+.wallet-popup-subtitle {
+    font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+    margin: 0;
+    opacity: 0.8;
+}
+
+.wallet-popup-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,20,147,0.1);
+    border: 1px solid rgba(255,20,147,0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--bright-pink);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wallet-popup-close:hover {
+    background: var(--bright-pink);
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.wallet-popup-body {
+    padding: 24px 32px 32px;
+}
+
+.wallet-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wallet-option {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(255,20,147,0.2);
+    border-radius: 20px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+    width: 100%;
+}
+
+.wallet-option:hover {
+    background: rgba(255,20,147,0.1);
+    border-color: var(--bright-pink);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 30px rgba(255,20,147,0.25),
+        0 4px 16px rgba(0,0,0,0.1);
+}
+
+.wallet-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.wallet-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.wallet-name {
+    font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wallet-desc {
+    font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bright-pink);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    opacity: 0.8;
+}
+
+.wallet-connect-btn {
+    font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--bright-pink);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    background: rgba(255,20,147,0.1);
+    border: 1px solid rgba(255,20,147,0.3);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.wallet-option:hover .wallet-connect-btn {
+    background: var(--bright-pink);
+    color: var(--white);
+    transform: scale(1.05);
+}
+
+.wallet-popup-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,20,147,0.1);
+}
+
+.wallet-popup-footer p {
+    font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--black);
+    margin: 0;
+    opacity: 0.6;
+}

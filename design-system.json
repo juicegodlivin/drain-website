@@ -1,0 +1,216 @@
+{
+  "designSystem": {
+    "projectName": "FANCY",
+    "tokenSymbol": "$FANCY",
+    "style": {
+      "aesthetic": "Playful crypto meme token with retro cartoon vibes",
+      "inspiration": "Early 2000s web design meets modern crypto culture",
+      "tone": "Fun, energetic, slightly irreverent"
+    },
+    "colorPalette": {
+      "primary": {
+        "blue": "#3B9EFF",
+        "skyBlue": "#87CEEB",
+        "lightBlue": "#ADD8E6"
+      },
+      "accent": {
+        "red": "#DC143C",
+        "darkRed": "#B91C3C",
+        "lightRed": "#FF4458",
+        "description": "Replace all green elements with this crimson red shade"
+      },
+      "neutral": {
+        "white": "#FFFFFF",
+        "black": "#000000",
+        "gray": "#808080",
+        "darkGray": "#404040"
+      },
+      "special": {
+        "hornOrange": "#FFB366",
+        "silverGray": "#C0C0C0"
+      }
+    },
+    "typography": {
+      "logoFont": {
+        "family": "Custom bubble letters or Impact",
+        "weight": "bold",
+        "style": "3D effect with green/red outline and shadow",
+        "size": "120px",
+        "color": "Gradient from light to dark with accent outline"
+      },
+      "headings": {
+        "family": "Comic Sans MS, Arial Black, or similar playful font",
+        "weight": "bold",
+        "color": "#FFFFFF",
+        "textTransform": "uppercase"
+      },
+      "body": {
+        "family": "Arial, sans-serif",
+        "size": "16px",
+        "color": "#FFFFFF"
+      },
+      "marquee": {
+        "family": "Arial Black",
+        "size": "24px",
+        "color": "#000000",
+        "background": "#DC143C"
+      }
+    },
+    "layout": {
+      "structure": "Single page with centered content",
+      "maxWidth": "1200px",
+      "padding": "40px",
+      "sections": {
+        "header": {
+          "type": "Browser window mockup",
+          "elements": ["logo", "navigation", "CTAButton"],
+          "background": "White browser chrome with rounded corners"
+        },
+        "hero": {
+          "type": "Split layout",
+          "left": "Character mascot image",
+          "right": "Welcome text and CTA",
+          "background": "Gradient blue"
+        },
+        "marquee": {
+          "type": "Scrolling ticker",
+          "position": "Bottom fixed",
+          "height": "60px"
+        }
+      }
+    },
+    "components": {
+      "browserWindow": {
+        "style": "macOS-style window",
+        "cornerRadius": "12px",
+        "shadow": "0 10px 30px rgba(0,0,0,0.2)",
+        "controls": {
+          "close": "#FF5F57",
+          "minimize": "#FFBD2E",
+          "maximize": "#28CA42"
+        }
+      },
+      "logo": {
+        "text": "FANCY",
+        "style": "3D bubble letters",
+        "effects": [
+          "Red outline (2px)",
+          "Dark shadow offset",
+          "Slight gradient fill"
+        ]
+      },
+      "navigation": {
+        "items": ["HOME", "ABOUT", "TOKENOMICS", "HOW TO BUY"],
+        "style": "Horizontal menu",
+        "typography": "Uppercase, bold"
+      },
+      "ctaButton": {
+        "text": "BUY $FANCY",
+        "background": "#DC143C",
+        "color": "#FFFFFF",
+        "borderRadius": "25px",
+        "padding": "12px 24px",
+        "hover": "Brightness increase, slight scale"
+      },
+      "mascotImage": {
+        "name": "Fancy Thomas",
+        "description": "Thomas the Tank Engine with custom face",
+        "positioning": {
+          "alignment": "Center-left of hero section",
+          "size": "400px height",
+          "animation": "Subtle float or bounce"
+        },
+        "imageProcessing": {
+          "background": "Remove if present",
+          "effects": [
+            "Add motion blur lines radiating from behind",
+            "Ensure face is clearly visible",
+            "Apply slight glow effect",
+            "Position at slight angle for dynamism"
+          ],
+          "integration": "Place as primary focal point in hero section"
+        }
+      },
+      "boneShaped": {
+        "element": "JOIN THE COMMUNITY button",
+        "background": "#DC143C",
+        "shape": "Bone/dog treat shape with rounded ends",
+        "text": {
+          "color": "#000000",
+          "weight": "bold"
+        }
+      },
+      "trustBadges": {
+        "text": "TRUSTED BY",
+        "icons": ["Various crypto/security badges"],
+        "style": "Monochrome icons in a row"
+      },
+      "marqueeBar": {
+        "text": "BUY $FANCY NOW!",
+        "behavior": "Continuous horizontal scroll",
+        "speed": "Medium",
+        "background": "#DC143C",
+        "textColor": "#000000"
+      }
+    },
+    "animations": {
+      "mascot": {
+        "type": "CSS keyframes",
+        "effects": ["float", "subtle rotation", "glow pulse"]
+      },
+      "buttons": {
+        "hover": "Scale(1.05) and brightness(1.2)"
+      },
+      "marquee": {
+        "type": "CSS animation",
+        "direction": "left to right",
+        "duration": "20s",
+        "iteration": "infinite"
+      },
+      "motionLines": {
+        "description": "Manga-style speed lines behind mascot",
+        "opacity": "0.7",
+        "color": "#000000"
+      }
+    },
+    "responsive": {
+      "breakpoints": {
+        "mobile": "768px",
+        "tablet": "1024px",
+        "desktop": "1200px"
+      },
+      "mobileAdjustments": [
+        "Stack hero content vertically",
+        "Reduce mascot size to 250px",
+        "Hamburger menu for navigation",
+        "Smaller typography sizes"
+      ]
+    },
+    "implementation": {
+      "technologies": ["HTML5", "CSS3", "JavaScript"],
+      "framework": "Optional: React or Vue for interactivity",
+      "cssFeatures": [
+        "CSS Grid for layout",
+        "Flexbox for component alignment",
+        "CSS animations for effects",
+        "Custom properties for theming"
+      ],
+      "mascotImageInstructions": {
+        "placement": "Position Fancy Thomas prominently in hero section",
+        "sizing": "Maintain aspect ratio, max-height 400px on desktop",
+        "formatting": [
+          "Use PNG format for transparency",
+          "Add CSS filter for slight glow: filter: drop-shadow(0 0 20px rgba(255,255,255,0.5))",
+          "Apply transform: rotate(-5deg) for dynamic angle",
+          "Wrap in div with overflow:hidden for motion line effect"
+        ],
+        "cssExample": ".mascot-container { position: relative; } .mascot-image { width: auto; height: 400px; filter: drop-shadow(0 0 30px rgba(220,20,60,0.3)); transform: rotate(-5deg); animation: float 3s ease-in-out infinite; }"
+      }
+    },
+    "seoMetadata": {
+      "title": "FANCY Token - The New Crypto Sensation",
+      "description": "Join the FANCY community and unleash the power of meme tokens",
+      "keywords": ["FANCY", "crypto", "meme token", "blockchain"]
+    }
+  }
+}

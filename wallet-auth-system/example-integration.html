@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Not A Drainer - DCA Into Trending Tokens</title>
+  
+  <!-- Google Fonts for NOT A DRAINER -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+  
+  <!-- Wallet Auth System CSS -->
+  <link rel="stylesheet" href="wallet-auth.css">
+  
+  <!-- Your existing site styles (optional) -->
+  <style>
+    /* Example main content styles */
+    .main-content {
+      font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+      color: white;
+      background: #000;
+      min-height: 100vh;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .main-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, 
+        rgba(255, 20, 147, 0.1) 0%, 
+        rgba(0, 0, 0, 0.8) 50%, 
+        rgba(255, 20, 147, 0.05) 100%);
+      z-index: -1;
+    }
+    
+    .main-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .main-title {
+      font-family: 'Fredoka', 'Bubblegum Sans', 'Impact', Arial Black, sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: #ff1493;
+      text-shadow: 
+        2px 2px 0 #000,
+        4px 4px 0 #000,
+        0 0 30px rgba(255,20,147,0.8);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      animation: glow-pulse 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow-pulse {
+      0% { text-shadow: 2px 2px 0 #000, 4px 4px 0 #000, 0 0 30px rgba(255,20,147,0.8); }
+      100% { text-shadow: 2px 2px 0 #000, 4px 4px 0 #000, 0 0 50px rgba(255,20,147,1); }
+    }
+    
+    .main-subtitle {
+      font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .wallet-info {
+      background: rgba(255, 20, 147, 0.1);
+      border: 2px solid rgba(255, 20, 147, 0.3);
+      border-radius: 24px;
+      padding: 2rem;
+      margin: 2rem auto;
+      max-width: 500px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .disconnect-btn {
+      background: linear-gradient(135deg, #ff1493, #ff69b4);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+    }
+    
+    .disconnect-btn:hover {
+      background: linear-gradient(135deg, #ff69b4, #ff1493);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <!-- Video Background (replace with your own video) -->
+    <div class="loading-video-background">
+      <video autoplay muted loop>
+        <source src="../Notadrainer Background.mp4" type="video/mp4">
+        <!-- Fallback if no video -->
+      </video>
+    </div>
+    
+    <div class="loading-video-overlay"></div>
+    
+    <div class="loading-container">
+      <div class="blood-drop-loader">
+        <div class="blood-drop"></div>
+        <div class="blood-drop"></div>
+        <div class="blood-drop"></div>
+      </div>
+      
+      <div class="loading-text">NOT A DRAINER</div>
+      <div class="loading-subtitle">Initializing DCA intelligence...</div>
+      
+      <div class="loading-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBar"></div>
+        </div>
+        <div class="loading-percentage" id="loadingPercentage">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Screen -->
+  <div class="auth-screen hidden" id="authScreen">
+    <div class="auth-backdrop"></div>
+    
+    <div class="auth-container">
+      <div class="auth-header">
+        <div class="auth-logo">D</div>
+        <h1 class="auth-title">CONNECT WALLET</h1>
+        <p class="auth-subtitle">Choose your wallet to start DCA draining</p>
+      </div>
+      
+      <div class="auth-body">
+        <div class="wallet-grid">
+          <div class="wallet-card" data-wallet="phantom">
+            <div class="wallet-card-inner">
+              <img class="wallet-icon" src="assets/phantom-wallet-logo.png" alt="Phantom Wallet" />
+              <div class="wallet-info">
+                <div class="wallet-name">PHANTOM</div>
+                <div class="wallet-desc">SOL • PROTOCOL</div>
+              </div>
+              <div class="connect-text">CONNECT</div>
+            </div>
+          </div>
+          
+          <div class="wallet-card" data-wallet="solflare">
+            <div class="wallet-card-inner">
+              <img class="wallet-icon" src="assets/solflare-wallet-logo.jpg" alt="Solflare Wallet" />
+              <div class="wallet-info">
+                <div class="wallet-name">SOLFLARE</div>
+                <div class="wallet-desc">SOL • SECURE</div>
+              </div>
+              <div class="connect-text">CONNECT</div>
+            </div>
+          </div>
+          
+          <div class="wallet-card" data-wallet="metamask">
+            <div class="wallet-card-inner">
+              <img class="wallet-icon" src="assets/metamask-wallet-logo.jpg" alt="MetaMask Wallet" />
+              <div class="wallet-info">
+                <div class="wallet-name">METAMASK</div>
+                <div class="wallet-desc">ETH • EVM</div>
+              </div>
+              <div class="connect-text">CONNECT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="auth-footer">
+        <p class="auth-disclaimer">
+          🔒 SECURE & ENCRYPTED CONNECTION<br>
+          NEVER STORE YOUR PRIVATE KEYS OR PERSONAL INFORMATION
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content (Your Website) -->
+  <div class="main-content hidden" id="mainContent">
+    <div class="main-header">
+      <h1 class="main-title">NOT A DRAINER</h1>
+      <p class="main-subtitle">You have successfully connected your wallet! Time to start DCA draining those trending tokens!</p>
+    </div>
+    
+    <div class="wallet-info">
+      <h3>Connected Wallet Info</h3>
+      <p id="walletType">Type: Not connected</p>
+      <p id="walletAddress">Address: Not connected</p>
+      <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect & Restart</button>
+    </div>
+    
+    <!-- Your existing website content goes here -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <p style="color: rgba(255, 255, 255, 0.7);">
+        🎯 Welcome to the NOT A DRAINER DCA platform!<br>
+        Your wallet is connected and ready to start passive DCA into trending PumpFun tokens.<br>
+        <strong>Time to turn those wallet rent fees into smart investments!</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- Wallet Auth System JavaScript -->
+  <script src="wallet-auth.js"></script>
+  
+  <!-- Your custom JavaScript -->
+  <script>
+    // Listen for wallet connection events
+    window.addEventListener('walletConnected', (event) => {
+      console.log('Wallet connected:', event.detail);
+      
+      // Update UI with wallet info
+      document.getElementById('walletType').textContent = `Type: ${event.detail.type}`;
+      document.getElementById('walletAddress').textContent = `Address: ${event.detail.address.slice(0, 6)}...${event.detail.address.slice(-4)}`;
+    });
+    
+    // Disconnect function
+    function disconnectWallet() {
+      if (window.walletAuth) {
+        window.walletAuth.forceReauth();
+      }
+    }
+    
+    // Optional: Customize loading duration
+    // window.walletAuth = new WalletAuthController({
+    //   loadingDuration: 5000, // 5 seconds instead of 10
+    //   enableDebugLogs: false  // Disable debug logs in production
+    // });
+  </script>
+</body>
+</html>

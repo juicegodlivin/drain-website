@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRAIN - Passive DCA Into Trending Tokens</title>
+    <meta name="description" content="Reinvest your trading rent fees into top trending PumpFun tokens. Passive DCA strategy for smart crypto investors.">
+    <meta name="keywords" content="DCA, PumpFun, crypto trading, rent fees, passive investing, DeFi, trending tokens">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="background-video" playsinline>
+        <source src="Notadrainer Background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <!-- Browser Window Container -->
+    <div class="browser-window">
+        <!-- Navigation Pill -->
+        <nav class="nav-pill">
+            <div class="nav-left">
+                <h1 class="nav-title">DRAIN</h1>
+            </div>
+            <div class="nav-center">
+                <a href="how-it-works.html">HOW IT WORKS</a>
+                <a href="trending-tokens.html">TRENDING TOKENS</a>
+            </div>
+            <div class="nav-right">
+                <button class="buy-button">START DCA</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Title now integrated in navigation header -->
+
+            <!-- Central Content Area - Click the Drainer button -->
+            <div class="center-content">
+                <button id="drainer-button" class="drainer-button">
+                    GET DRAINED
+                </button>
+            </div>
+
+            <!-- Speech Bubble - larger with typing animation -->
+            <div class="speech-bubble">
+                <p id="typing-text" class="typing-text"></p>
+            </div>
+
+        </main>
+
+        <!-- Ticker Bar - INSIDE the browser window -->
+        <div class="ticker-bar">
+            <!-- Social Icons in banner -->
+            <div class="banner-socials">
+                <a href="#" class="side-icon">𝕏</a>
+                <a href="#" class="side-icon pumpfun-icon">
+                    <img src="Pump_fun_logo.png" alt="Pump.fun" class="icon-image">
+                </a>
+                <a href="#" class="side-icon community-icon">👥</a>
+            </div>
+            
+            <div class="ticker-text">
+                <a href="how-it-works.html#drain">$DRAIN</a>
+                <a href="how-it-works.html#passive-dca">PASSIVE DCA</a>
+                <a href="how-it-works.html#rent-fees">RENT FEES</a>
+                <a href="trending-tokens.html">TRENDING TOKENS</a>
+                <a href="how-it-works.html#pumpfun">PUMPFUN</a>
+                <a href="how-it-works.html#drain">DRAIN</a>
+                <a href="how-it-works.html#smart-investing">SMART INVESTING</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Connection Popup -->
+    <div class="wallet-popup-overlay" id="walletPopup">
+        <div class="wallet-popup">
+            <div class="wallet-popup-header">
+                <h2 class="wallet-popup-title">CONNECT WALLET</h2>
+                <p class="wallet-popup-subtitle">Choose your wallet to start DCA draining</p>
+                <button class="wallet-popup-close" id="walletPopupClose">&times;</button>
+            </div>
+            
+            <div class="wallet-popup-body">
+                <div class="wallet-options">
+                    <button class="wallet-option" data-wallet="phantom">
+                        <img src="wallet-auth-system/assets/phantom-wallet-logo.png" alt="Phantom" class="wallet-logo">
+                        <div class="wallet-details">
+                            <span class="wallet-name">PHANTOM</span>
+                            <span class="wallet-desc">SOL • PROTOCOL</span>
+                        </div>
+                        <span class="wallet-connect-btn">CONNECT</span>
+                    </button>
+                    
+                    <button class="wallet-option" data-wallet="solflare">
+                        <img src="wallet-auth-system/assets/solflare-wallet-logo.jpg" alt="Solflare" class="wallet-logo">
+                        <div class="wallet-details">
+                            <span class="wallet-name">SOLFLARE</span>
+                            <span class="wallet-desc">SOL • SECURE</span>
+                        </div>
+                        <span class="wallet-connect-btn">CONNECT</span>
+                    </button>
+                    
+                    <button class="wallet-option" data-wallet="metamask">
+                        <img src="wallet-auth-system/assets/metamask-wallet-logo.jpg" alt="MetaMask" class="wallet-logo">
+                        <div class="wallet-details">
+                            <span class="wallet-name">METAMASK</span>
+                            <span class="wallet-desc">ETH • MULTI-CHAIN</span>
+                        </div>
+                        <span class="wallet-connect-btn">CONNECT</span>
+                    </button>
+                </div>
+                
+                <div class="wallet-popup-footer">
+                    <p>By connecting, you agree to our Terms of Service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Video and drainer button functionality
+        const backgroundVideo = document.getElementById('background-video');
+        const drainerButton = document.getElementById('drainer-button');
+        const typingTextElement = document.getElementById('typing-text');
+        
+        // Typing animation text
+        const fullText = "TURN WALLET RENT FEES INTO DUST AND USE THAT DUST TO SMART DCA INTO TRENDING PUMPFUN TOKENS!";
+        
+        // Ensure video starts paused and at beginning
+        backgroundVideo.currentTime = 0;
+        backgroundVideo.pause();
+        
+        // Typing animation function - no expansion, no cursor
+        function typeText() {
+            let i = 0;
+            typingTextElement.innerHTML = '';
+            
+            const typing = setInterval(() => {
+                if (i < fullText.length) {
+                    typingTextElement.innerHTML += fullText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, 50); // Typing speed
+        }
+        
+        // Start typing animation when page loads
+        window.addEventListener('load', function() {
+            backgroundVideo.pause();
+            backgroundVideo.currentTime = 0;
+            
+            // Start typing animation after a short delay
+            setTimeout(typeText, 1000);
+        });
+        
+        // Click the Drainer button functionality
+        drainerButton.addEventListener('click', function() {
+            // Reset video to beginning and play once
+            backgroundVideo.currentTime = 0;
+            backgroundVideo.play();
+            
+            // Show wallet popup
+            showWalletPopup();
+            
+            // Add visual feedback to button
+            drainerButton.style.transform = 'scale(0.95) translateY(2px)';
+            setTimeout(() => {
+                drainerButton.style.transform = '';
+            }, 150);
+        });
+        
+        // When video ends, pause it (no loop)
+        backgroundVideo.addEventListener('ended', function() {
+            backgroundVideo.pause();
+            backgroundVideo.currentTime = 0; // Reset to beginning for next play
+        });
+
+        // Wallet Popup functionality
+        const walletPopup = document.getElementById('walletPopup');
+        const walletPopupClose = document.getElementById('walletPopupClose');
+
+        function showWalletPopup() {
+            walletPopup.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        function hideWalletPopup() {
+            walletPopup.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // Close popup when clicking close button
+        walletPopupClose.addEventListener('click', hideWalletPopup);
+
+        // Close popup when clicking outside
+        walletPopup.addEventListener('click', function(e) {
+            if (e.target === walletPopup) {
+                hideWalletPopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && walletPopup.classList.contains('show')) {
+                hideWalletPopup();
+            }
+        });
+
+        // Add event listeners to wallet buttons for direct connection
+        document.addEventListener('DOMContentLoaded', function() {
+            const walletButtons = document.querySelectorAll('.wallet-option');
+            
+            walletButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const walletType = this.getAttribute('data-wallet');
+                    console.log(`🔗 User clicked ${walletType.toUpperCase()} wallet button`);
+                    await connectWallet(walletType);
+                });
+            });
+        });
+
+        async function connectWallet(walletType) {
+            try {
+                console.log(`🚀 Starting connection process for ${walletType.toUpperCase()} wallet...`);
+                
+                // Add loading state
+                const walletOption = document.querySelector(`[data-wallet="${walletType}"]`);
+                const connectBtn = walletOption.querySelector('.wallet-connect-btn');
+                const originalText = connectBtn.textContent;
+                connectBtn.textContent = 'CONNECTING...';
+                walletOption.style.opacity = '0.7';
+
+                let result = null;
+
+                switch (walletType) {
+                    case 'phantom':
+                        result = await connectPhantom();
+                        break;
+                    case 'solflare':
+                        result = await connectSolflare();
+                        break;
+                    case 'metamask':
+                        result = await connectMetaMask();
+                        break;
+                    default:
+                        throw new Error('Unsupported wallet type');
+                }
+
+                if (result.success) {
+                    console.log('🎉 Wallet connected successfully:', result);
+                    
+                    // Show success feedback
+                    connectBtn.textContent = 'CONNECTED!';
+                    connectBtn.style.background = 'var(--bright-pink)';
+                    connectBtn.style.color = 'var(--white)';
+                    
+                    // Close popup after success
+                    setTimeout(() => {
+                        hideWalletPopup();
+                        alert(`Successfully connected to ${walletType.toUpperCase()}!`);
+                    }, 1500);
+                } else {
+                    throw new Error(result.error || 'Connection failed');
+                }
+
+            } catch (error) {
+                console.error('❌ Wallet connection error:', error);
+                
+                // Reset UI
+                const walletOption = document.querySelector(`[data-wallet="${walletType}"]`);
+                const connectBtn = walletOption.querySelector('.wallet-connect-btn');
+                connectBtn.textContent = 'FAILED';
+                connectBtn.style.background = '#ff4444';
+                connectBtn.style.color = 'white';
+                walletOption.style.opacity = '1';
+
+                // Reset after delay
+                setTimeout(() => {
+                    connectBtn.textContent = 'CONNECT';
+                    connectBtn.style.background = '';
+                    connectBtn.style.color = '';
+                }, 2000);
+
+                alert(`Failed to connect to ${walletType.toUpperCase()}: ${error.message}`);
+            }
+        }
+
+        // WORKING wallet connection functions
+        async function connectPhantom() {
+            console.log('🔍 Phantom connection attempt...');
+            
+            // Check if Phantom is installed using CORRECT 2024 pattern
+            if (!window.phantom || !window.phantom.solana) {
+                window.open('https://phantom.app/', '_blank');
+                return { success: false, error: 'Phantom wallet not found. Please install Phantom extension and refresh the page.' };
+            }
+
+            if (!window.phantom.solana.isPhantom) {
+                return { success: false, error: 'Phantom provider not detected. Please ensure Phantom is enabled.' };
+            }
+
+            try {
+                console.log('📱 Requesting Phantom connection...');
+                const response = await window.phantom.solana.connect({ onlyIfTrusted: false });
+                
+                if (!response || !response.publicKey) {
+                    return { success: false, error: 'Failed to get wallet address from Phantom.' };
+                }
+
+                console.log('✅ Phantom connected successfully:', response.publicKey.toString());
+                return {
+                    success: true,
+                    data: {
+                        publicKey: response.publicKey.toString(),
+                        address: response.publicKey.toString()
+                    }
+                };
+            } catch (error) {
+                console.error('Phantom connection error:', error);
+                if (error.code === 4001 || error.message.includes('User rejected')) {
+                    return { success: false, error: 'Connection rejected by user. Please approve the connection request in Phantom.' };
+                }
+                return { success: false, error: `Connection failed: ${error.message}` };
+            }
+        }
+
+        async function connectSolflare() {
+            console.log('🔍 Solflare connection attempt...');
+            
+            let solflareProvider = null;
+            
+            if (window.solflare && window.solflare.isSolflare) {
+                solflareProvider = window.solflare;
+            } else if (window.solana && window.solana.isSolflare) {
+                solflareProvider = window.solana;
+            } else if (window.SolflareApp) {
+                solflareProvider = window.SolflareApp;
+            }
+            
+            if (!solflareProvider) {
+                window.open('https://solflare.com/', '_blank');
+                return { success: false, error: 'Solflare wallet not found. Please install Solflare extension and refresh the page.' };
+            }
+
+            try {
+                console.log('📱 Requesting Solflare connection...');
+                const response = await solflareProvider.connect();
+                
+                if (!response || !response.publicKey) {
+                    return { success: false, error: 'Failed to get wallet address from Solflare.' };
+                }
+
+                console.log('✅ Solflare connected successfully:', response.publicKey.toString());
+                return {
+                    success: true,
+                    data: {
+                        publicKey: response.publicKey.toString(),
+                        address: response.publicKey.toString()
+                    }
+                };
+            } catch (error) {
+                console.error('Solflare connection error:', error);
+                if (error.code === 4001 || error.message.includes('rejected')) {
+                    return { success: false, error: 'Connection rejected by user. Please approve the connection request in Solflare.' };
+                }
+                return { success: false, error: `Connection failed: ${error.message}` };
+            }
+        }
+
+        async function connectMetaMask() {
+            console.log('🔍 MetaMask connection attempt...');
+            
+            if (typeof window.ethereum === 'undefined') {
+                window.open('https://metamask.io/download/', '_blank');
+                return { success: false, error: 'MetaMask not found. Please install MetaMask extension and refresh the page.' };
+            }
+
+            if (!window.ethereum.isMetaMask) {
+                return { success: false, error: 'MetaMask provider not detected. Please ensure MetaMask is enabled.' };
+            }
+
+            try {
+                console.log('📱 Requesting MetaMask accounts...');
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+
+                if (!accounts || accounts.length === 0) {
+                    return { success: false, error: 'No accounts found. Please unlock MetaMask and try again.' };
+                }
+
+                console.log('✅ MetaMask connected successfully:', accounts[0]);
+                return {
+                    success: true,
+                    data: {
+                        address: accounts[0],
+                        publicKey: accounts[0]
+                    }
+                };
+            } catch (error) {
+                console.error('MetaMask connection error:', error);
+                if (error.code === 4001) {
+                    return { success: false, error: 'Connection rejected by user. Please approve the connection request.' };
+                } else if (error.code === -32002) {
+                    return { success: false, error: 'MetaMask is already processing a request. Please check MetaMask and try again.' };
+                }
+                return { success: false, error: `Connection failed: ${error.message}` };
+            }
+        }
+
+        // Debug function to check what wallets are available
+        window.checkWalletStatus = function() {
+            console.log('=== WALLET STATUS DEBUG ===');
+            console.log('window.phantom:', window.phantom);
+            console.log('window.phantom?.solana?.isPhantom:', window.phantom?.solana?.isPhantom);
+            console.log('window.ethereum?.isMetaMask:', window.ethereum?.isMetaMask);
+            console.log('window.solflare?.isSolflare:', window.solflare?.isSolflare);
+            console.log('=== END DEBUG ===');
+        };
+
+        // Auto-run wallet status check
+        setTimeout(() => {
+            window.checkWalletStatus();
+        }, 2000);
+    </script>
+</body>
+</html>

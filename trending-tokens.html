@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Tokens - DRAIN</title>
+    <meta name="description" content="Discover the hottest trending tokens on Solana. Live data from CoinGecko API showing real-time market performance.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Trending Tokens specific styles */
+        .main-content {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 120px 0 0;
+            overflow: hidden;
+        }
+
+        .trending-container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 40px;
+            margin-right: 40px;
+            box-shadow: 
+                0 20px 60px rgba(255,20,147,0.2),
+                0 8px 32px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+            border: 2px solid rgba(255, 20, 147, 0.2);
+            position: relative;
+            z-index: 10;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 20, 147, 0.3) transparent;
+        }
+
+        .trending-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .trending-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .trending-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 20, 147, 0.3);
+            border-radius: 4px;
+        }
+
+        .trending-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 20, 147, 0.5);
+        }
+
+        .trending-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 20, 147, 0.2);
+        }
+
+        .trending-title {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Impact', Arial Black, sans-serif;
+            font-size: 56px;
+            font-weight: normal;
+            color: var(--bright-pink);
+            text-shadow: 
+                3px 3px 0 var(--black),
+                6px 6px 0 var(--black),
+                0 0 30px rgba(255,20,147,0.8);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+        }
+
+        .trending-subtitle {
+            font-family: 'Nunito', 'Fredoka', 'Arial', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 0 0 15px 0;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .last-updated {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--bright-pink);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 20, 147, 0.2);
+            border-left: 4px solid var(--bright-pink);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--bright-pink);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tokens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .token-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 20, 147, 0.2);
+            border-radius: 24px;
+            padding: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .token-card:hover {
+            background: rgba(255, 20, 147, 0.05);
+            border-color: var(--bright-pink);
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 40px rgba(255,20,147,0.25),
+                0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .token-rank {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--bright-pink);
+            color: var(--white);
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Arial Black', sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-shadow: 1px 1px 0 var(--black);
+        }
+
+        .token-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .token-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 20, 147, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .token-info {
+            flex: 1;
+        }
+
+        .token-name {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial Black', sans-serif;
+            font-size: 22px;
+            font-weight: normal;
+            color: var(--black);
+            margin: 0 0 5px 0;
+            text-shadow: 1px 1px 0 rgba(255, 20, 147, 0.2);
+            line-height: 1.2;
+        }
+
+        .token-symbol {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--bright-pink);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .token-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255, 20, 147, 0.05);
+            border: 1px solid rgba(255, 20, 147, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 5px 0;
+            opacity: 0.7;
+        }
+
+        .stat-value {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--black);
+            margin: 0;
+        }
+
+        .price-change {
+            font-weight: 800;
+        }
+
+        .price-change.positive {
+            color: #00C851;
+        }
+
+        .price-change.negative {
+            color: #ff4444;
+        }
+
+        .market-cap-rank {
+            background: linear-gradient(135deg, var(--bright-pink), var(--deep-pink));
+            color: var(--white);
+            border: none;
+        }
+
+        .market-cap-rank .stat-label,
+        .market-cap-rank .stat-value {
+            color: var(--white);
+        }
+
+
+        .refresh-button {
+            background: linear-gradient(135deg, var(--bright-pink), var(--deep-pink));
+            color: var(--white);
+            border: 3px solid var(--black);
+            border-radius: 20px;
+            padding: 12px 24px;
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 0 var(--black);
+            margin-left: 15px;
+        }
+
+        .refresh-button:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,20,147,0.4);
+        }
+
+        .refresh-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid rgba(255, 68, 68, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .error-title {
+            font-family: 'Kawaii RT Mona Shine', 'Fredoka', 'Bubblegum Sans', 'Arial Black', sans-serif;
+            font-size: 24px;
+            font-weight: normal;
+            color: #ff4444;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+        }
+
+        .error-text {
+            font-family: 'Nunito', 'Arial', sans-serif;
+            font-size: 16px;
+            color: var(--black);
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 100px 0 0;
+            }
+
+            .trending-container {
+                padding: 20px;
+                margin: 16px;
+                border-radius: 24px;
+            }
+
+            .trending-title {
+                font-size: 36px;
+            }
+
+            .trending-subtitle {
+                font-size: 16px;
+            }
+
+            .tokens-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .token-card {
+                padding: 20px;
+            }
+
+            .token-name {
+                font-size: 18px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 80px 0 0;
+            }
+
+            .trending-container {
+                padding: 16px;
+                margin: 12px;
+            }
+
+            .trending-title {
+                font-size: 28px;
+                line-height: 1.2;
+            }
+
+            .trending-subtitle {
+                font-size: 14px;
+            }
+
+            .token-card {
+                padding: 16px;
+            }
+
+            .token-header {
+                gap: 12px;
+            }
+
+            .token-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .token-name {
+                font-size: 16px;
+            }
+
+            .token-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .refresh-button {
+                padding: 10px 16px;
+                font-size: 12px;
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="background-video" autoplay muted loop playsinline>
+        <source src="Notadrainer Background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Browser Window Container -->
+    <div class="browser-window">
+        <!-- Navigation Pill -->
+        <nav class="nav-pill">
+            <div class="nav-left">
+                <a href="index.html" class="nav-title">DRAIN</a>
+            </div>
+            <div class="nav-center">
+                <a href="how-it-works.html">HOW IT WORKS</a>
+                <a href="#trending">TRENDING TOKENS</a>
+            </div>
+            <div class="nav-right">
+                <button class="buy-button" onclick="window.location.href='index.html'">START DCA</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Trending Container -->
+            <div class="trending-container">
+                <div class="trending-header">
+                    <h1 class="trending-title">TRENDING TOKENS</h1>
+                    <p class="trending-subtitle">Live market data from CoinGecko API</p>
+                    <p class="last-updated" id="lastUpdated">Loading...</p>
+                    <button class="refresh-button" id="refreshButton" onclick="fetchTrendingTokens()">🔄 REFRESH</button>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Loading trending tokens...</div>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <h3 class="error-title">Oops! Something went wrong</h3>
+                    <p class="error-text">Unable to fetch trending tokens. Please check your connection and try again.</p>
+                </div>
+
+                <!-- Tokens Grid -->
+                <div class="tokens-grid" id="tokensGrid" style="display: none;">
+                    <!-- Tokens will be dynamically inserted here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Ticker Bar -->
+        <div class="ticker-bar">
+            <div class="banner-socials">
+                <a href="#" class="side-icon">𝕏</a>
+                <a href="#" class="side-icon pumpfun-icon">
+                    <img src="Pump_fun_logo.png" alt="Pump.fun" class="icon-image">
+                </a>
+                <a href="#" class="side-icon community-icon">👥</a>
+            </div>
+            
+            <div class="ticker-text">
+                <a href="how-it-works.html#drain">$DRAIN</a>
+                <a href="how-it-works.html#passive-dca">PASSIVE DCA</a>
+                <a href="how-it-works.html#rent-fees">RENT FEES</a>
+                <a href="#trending">TRENDING TOKENS</a>
+                <a href="how-it-works.html#pumpfun">PUMPFUN</a>
+                <a href="how-it-works.html#drain">DRAIN</a>
+                <a href="how-it-works.html#smart-investing">SMART INVESTING</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-play video background
+        const backgroundVideo = document.getElementById('background-video');
+        backgroundVideo.play().catch(e => console.log('Video autoplay prevented:', e));
+
+        // CoinGecko API integration
+        const COINGECKO_API_BASE = 'https://api.coingecko.com/api/v3';
+        let isLoading = false;
+
+        // DOM elements
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const tokensGrid = document.getElementById('tokensGrid');
+        const lastUpdated = document.getElementById('lastUpdated');
+        const refreshButton = document.getElementById('refreshButton');
+
+        // Format price with appropriate decimals
+        function formatPrice(price) {
+            if (price >= 1) {
+                return `$${price.toFixed(2)}`;
+            } else if (price >= 0.01) {
+                return `$${price.toFixed(4)}`;
+            } else {
+                return `$${price.toFixed(8)}`;
+            }
+        }
+
+        // Format large numbers
+        function formatLargeNumber(num) {
+            if (num >= 1e9) {
+                return `$${(num / 1e9).toFixed(1)}B`;
+            } else if (num >= 1e6) {
+                return `$${(num / 1e6).toFixed(1)}M`;
+            } else if (num >= 1e3) {
+                return `$${(num / 1e3).toFixed(1)}K`;
+            } else {
+                return `$${num.toFixed(0)}`;
+            }
+        }
+
+        // Format percentage change
+        function formatPercentChange(change) {
+            const formatted = Math.abs(change).toFixed(2);
+            return change >= 0 ? `+${formatted}%` : `-${formatted}%`;
+        }
+
+        // Create token card HTML
+        function createTokenCard(token, index) {
+            const priceChange24h = token.price_change_percentage_24h || 0;
+            const changeClass = priceChange24h >= 0 ? 'positive' : 'negative';
+            
+            return `
+                <div class="token-card">
+                    <div class="token-rank">#${index + 1}</div>
+                    <div class="token-header">
+                        <img src="${token.image}" alt="${token.name}" class="token-logo" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNGRjE0OTMiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9zdmc+Cjwvc3ZnPgo='">
+                        <div class="token-info">
+                            <h3 class="token-name">${token.name}</h3>
+                            <p class="token-symbol">${token.symbol.toUpperCase()}</p>
+                        </div>
+                    </div>
+                    <div class="token-stats">
+                        <div class="stat-item">
+                            <p class="stat-label">Current Price</p>
+                            <p class="stat-value">${formatPrice(token.current_price)}</p>
+                        </div>
+                        <div class="stat-item">
+                            <p class="stat-label">24h Change</p>
+                            <p class="stat-value price-change ${changeClass}">${formatPercentChange(priceChange24h)}</p>
+                        </div>
+                        <div class="stat-item">
+                            <p class="stat-label">Market Cap</p>
+                            <p class="stat-value">${token.market_cap ? formatLargeNumber(token.market_cap) : 'N/A'}</p>
+                        </div>
+                        <div class="stat-item market-cap-rank">
+                            <p class="stat-label">Market Rank</p>
+                            <p class="stat-value">#${token.market_cap_rank || 'N/A'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show loading state
+        function showLoading() {
+            isLoading = true;
+            loadingSpinner.style.display = 'flex';
+            errorMessage.style.display = 'none';
+            tokensGrid.style.display = 'none';
+            refreshButton.disabled = true;
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            isLoading = false;
+            loadingSpinner.style.display = 'none';
+            refreshButton.disabled = false;
+        }
+
+        // Show error state
+        function showError() {
+            hideLoading();
+            errorMessage.style.display = 'block';
+            tokensGrid.style.display = 'none';
+        }
+
+        // Show tokens
+        function showTokens() {
+            hideLoading();
+            errorMessage.style.display = 'none';
+            tokensGrid.style.display = 'grid';
+        }
+
+        // Fetch trending tokens from CoinGecko
+        async function fetchTrendingTokens() {
+            if (isLoading) return;
+
+            showLoading();
+
+            try {
+                // Fetch trending search data
+                const trendingResponse = await fetch(`${COINGECKO_API_BASE}/search/trending`);
+                if (!trendingResponse.ok) throw new Error('Failed to fetch trending data');
+                
+                const trendingData = await trendingResponse.json();
+                const trendingCoins = trendingData.coins.slice(0, 12); // Get top 12
+
+                // Extract coin IDs
+                const coinIds = trendingCoins.map(coin => coin.item.id).join(',');
+
+                // Fetch detailed market data
+                const marketResponse = await fetch(
+                    `${COINGECKO_API_BASE}/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=12&page=1&sparkline=false&price_change_percentage=24h`
+                );
+                
+                if (!marketResponse.ok) throw new Error('Failed to fetch market data');
+                
+                const marketData = await marketResponse.json();
+
+                // Render tokens
+                tokensGrid.innerHTML = marketData.map((token, index) => createTokenCard(token, index)).join('');
+                
+                // Update last updated time
+                const now = new Date();
+                lastUpdated.textContent = `Last updated: ${now.toLocaleTimeString()}`;
+
+                showTokens();
+
+            } catch (error) {
+                console.error('Error fetching trending tokens:', error);
+                showError();
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchTrendingTokens();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(fetchTrendingTokens, 300000);
+        });
+
+        // Manual refresh with cooldown
+        let lastRefresh = 0;
+        const REFRESH_COOLDOWN = 10000; // 10 seconds
+
+        const originalFetchTrendingTokens = fetchTrendingTokens;
+        fetchTrendingTokens = function() {
+            const now = Date.now();
+            if (now - lastRefresh < REFRESH_COOLDOWN && lastRefresh > 0) {
+                console.log('Please wait before refreshing again');
+                return;
+            }
+            lastRefresh = now;
+            originalFetchTrendingTokens();
+        };
+    </script>
+</body>
+</html>
